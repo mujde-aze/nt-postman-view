@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'firebase/analytics'
+import 'firebase/auth'
+import 'firebase/functions'
 
 ReactDOM.render(
   <React.StrictMode>
