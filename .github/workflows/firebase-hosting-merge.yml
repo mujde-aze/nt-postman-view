@@ -9,6 +9,7 @@ on:
 
 env:
   PACKAGE_NAME: nt-postman-view
+  BUILD_DIRECTORY: build
 
 jobs:
   build:
@@ -16,10 +17,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci && npm run test && npm run build
+
+      - name: Compress build directory
+      - run: zip -r ${{ env.PACKAGE_NAME }} ${{ env.BUILD_DIRECTORY }}
+
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ env.PACKAGE_NAME }}
-          path: build
+          path: ${{ env.PACKAGE_NAME }}.zip
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
@@ -27,7 +32,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ env.PACKAGE_NAME }}
+          name: ${{ env.BUILD_DIRECTORY }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
