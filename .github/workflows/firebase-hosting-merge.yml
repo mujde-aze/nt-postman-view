@@ -16,10 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci && npm run test && npm run build
+
+      - name: Build and test
+        run: npm ci && npm run test && npm run build
 
       - name: Compress build directory
-      - run: zip -r ${{ env.PACKAGE_NAME }} ${{ env.BUILD_DIRECTORY }}
+        run: zip -r ${{ env.PACKAGE_NAME }} ${{ env.BUILD_DIRECTORY }}
 
       - uses: actions/upload-artifact@v2
         with:
