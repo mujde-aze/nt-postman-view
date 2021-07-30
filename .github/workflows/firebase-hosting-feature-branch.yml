@@ -24,7 +24,6 @@ jobs:
         run: |
           touch .env
           .github/scripts/env.sh
-          cat .env
 
       - name: Build and test
         run: npm ci && npm run test && npm run build
