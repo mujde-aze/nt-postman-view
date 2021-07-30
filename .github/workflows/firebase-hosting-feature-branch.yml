@@ -2,15 +2,22 @@ name: Deploy to Firebase Hosting from feature branch
 
 on:
   push:
-    branches:
-      - feature/**
+    branches: [ feature/** ]
 jobs:
   build_and_preview:
    # if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci && npm run test && npm run build
+
+      - name: Configure env file
+        run: |
+          touch .env
+          .github/scripts/env.sh
+          cat .env
+
+      - name: Build and test
+        run: npm ci && npm run test && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
