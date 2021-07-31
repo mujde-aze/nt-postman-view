@@ -1,9 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function App(props) {
+  const firebase = props.firebase
+  const user = firebase.auth().currentUser.displayName
   return (
     <div className="App">
+      <p>Welcome {user}, you are now signed in!</p>
+      <p>Click <a onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
