@@ -5,7 +5,7 @@ function SignInScreen(props) {
     const uiConfig = {
         signInFlow: 'popup',
         signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID
+            firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
         ],
     }
 
