@@ -7,7 +7,7 @@ function App(props) {
   return (
     <div className="App">
       <p>Welcome {user}, you are now signed in!</p>
-      <p>Click <a onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
+      <p>Click <a href='blah' onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
