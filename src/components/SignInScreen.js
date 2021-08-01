@@ -7,9 +7,9 @@ function SignInScreen(props) {
         signInOptions: [
             {
                 provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
+                signInMethod: firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
                 disableSignUp: {
-                    status: true
+                    status: true,
                 }
             }
         ],
