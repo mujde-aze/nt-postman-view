@@ -15,4 +15,7 @@ const firebaseConfig = {
 
 Firebase.initializeApp(firebaseConfig)
 
+const appCheck = Firebase.appCheck();
+appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)
+
 export default Firebase
