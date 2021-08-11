@@ -14,8 +14,9 @@ const firebaseConfig = {
 }
 
 Firebase.initializeApp(firebaseConfig)
-
-const appCheck = Firebase.appCheck();
-appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)
+const auth = Firebase.auth();
+auth.useEmulator("http://localhost:9099")
+/*const appCheck = Firebase.appCheck();
+appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)*/
 
 export default Firebase
