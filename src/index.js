@@ -4,10 +4,11 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import firebase from './Firebase'
 import Firebase from "./components/Firebase";
+import {functions} from "./Firebase";
 
 ReactDOM.render(
     <React.StrictMode>
-        <Firebase firebase={firebase}/>
+        <Firebase firebase={firebase} functions={functions}/>
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -14,9 +14,14 @@ const firebaseConfig = {
 }
 
 Firebase.initializeApp(firebaseConfig);
-const auth = Firebase.auth();
-auth.useEmulator("http://localhost:9099")
+export const functions = Firebase.app().functions("australia-southeast1");
+
+if (process.env.REACT_APP_DEV_MODE) {
+    const auth = Firebase.auth();
+    auth.useEmulator("http://localhost:9099")
+    functions.useEmulator("localhost", 5001);
+}
 /*const appCheck = Firebase.appCheck();
 appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)*/
 
-export default Firebase
+export default Firebase;

@@ -17,11 +17,7 @@ function Firebase(props) {
         return (<SignInScreen firebase={firebase}/>)
     }
 
-    const functions = props.firebase.app().functions("australia-southeast1");
-    //TODO: remove before prod deployment
-    functions.useEmulator("localhost", 5001);
-
-    return (<App firebase={firebase} functions={functions}/>)
+    return (<App firebase={firebase} functions={props.functions}/>)
 }
 
 export default Firebase
