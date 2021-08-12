@@ -13,7 +13,7 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_MEASUREMENT_ID
 }
 
-Firebase.initializeApp(firebaseConfig)
+Firebase.initializeApp(firebaseConfig);
 const auth = Firebase.auth();
 auth.useEmulator("http://localhost:9099")
 /*const appCheck = Firebase.appCheck();

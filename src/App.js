@@ -3,8 +3,9 @@ import PostmanTable from "./components/PostmanTable";
 import {Col, Container, DropdownButton, Dropdown, Row} from "react-bootstrap";
 
 function App(props) {
-    const firebase = props.firebase
-    const user = firebase.auth().currentUser
+    const firebase = props.firebase;
+    const functions = props.functions;
+    const user = firebase.auth().currentUser;
 
     return (
         <Container>
@@ -16,7 +17,7 @@ function App(props) {
             </Row>
             <Row>
                 <Col>
-                    <PostmanTable firebase={firebase} ntStatus="needs_nt"/>
+                    <PostmanTable firebase={firebase} functions={functions} ntStatus="needs_nt"/>
                 </Col>
             </Row>
         </Container>

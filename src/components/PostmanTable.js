@@ -2,9 +2,7 @@ import {Button, Modal, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 
 function PostmanTable(props) {
-    const functions = props.firebase.app().functions("australia-southeast1");
-    //TODO: remove before prod deployment
-    functions.useEmulator("localhost", 5001);
+    const functions = props.functions
     const [data, setData] = useState([]);
     const [userIdUpdated, setUserIdUpdated] = useState(0);
     const [userToUpdate, setUserToUpdate] = useState({userId: 0, ntStatus: undefined});
