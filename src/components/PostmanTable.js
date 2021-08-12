@@ -38,7 +38,7 @@ function PostmanTable(props) {
                 userId: userId,
             });
             setUserIdUpdated(userId);
-        } catch (e) {
+        } catch (error) {
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
     }
@@ -49,11 +49,12 @@ function PostmanTable(props) {
                 const getContactsCallable = functions.httpsCallable("getDtContacts")
                 const result = await getContactsCallable({
                     ntStatus: props.ntStatus,
-                    assignedToMe: false,
+                    assignedToMe: true,
                 })
                 setData(result.data);
-            }catch (e) {
+            } catch (error) {
                 console.error(`Problem retrieving contacts with nt status ${props.ntStatus}`);
+                setData([]);
             }
         })();
     }, [props.ntStatus, userIdUpdated]);
@@ -67,6 +68,8 @@ function PostmanTable(props) {
                 <Button variant="warning" onClick={(e) => confirmUpdate(item.id, "nt_sent", e)}>NT Sent</Button>
             </td>
         </tr>);
+    } else {
+        contacts = [<tr key="1" align="center"><td colSpan="3">No contacts assigned to you currently require NTs.</td></tr>];
     }
 
     return (
