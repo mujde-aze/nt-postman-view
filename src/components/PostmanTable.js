@@ -1,5 +1,6 @@
 import {Button, Modal, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import CustomToast from "./Toast";
 
 function PostmanTable(props) {
     const functions = props.functions
@@ -7,6 +8,8 @@ function PostmanTable(props) {
     const [userIdUpdated, setUserIdUpdated] = useState(0);
     const [userToUpdate, setUserToUpdate] = useState({userId: 0, ntStatus: undefined});
     const [showModal, setShowModal] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastBody, setToastBody] = useState("");
 
     function handleNoModalOption() {
         console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
@@ -20,7 +23,7 @@ function PostmanTable(props) {
 
     function handleCloseModal() {
         setUserToUpdate({userId: 0, ntStatus: undefined});
-        setShowModal(false)
+        setShowModal(false);
     }
 
     function confirmUpdate(userId, status) {
@@ -37,6 +40,8 @@ function PostmanTable(props) {
             });
             setUserIdUpdated(userId);
         } catch (error) {
+            setToastBody("There was a problem updating the postage status. Please let the administrator know.");
+            setShowToast(true)
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
     }
@@ -46,11 +51,15 @@ function PostmanTable(props) {
             try {
                 const getContactsCallable = functions.httpsCallable("getDtContacts")
                 const result = await getContactsCallable({
-                    ntStatus: props.ntStatus,
+                    ntStatus: "blah",
                     assignedToMe: true,
                 })
                 setData(result.data);
             } catch (error) {
+                if(error.code !== "not-found"){
+                    setToastBody("There was a problem retrieving contacts. Please let the administrator know.");
+                    setShowToast(true)
+                }
                 console.error(`Problem retrieving contacts with nt status ${props.ntStatus}`);
                 setData([]);
             }
@@ -67,11 +76,12 @@ function PostmanTable(props) {
             </td>
         </tr>);
     } else {
-        contacts = [<tr key="1" align="center"><td colSpan="3">No contacts assigned to you currently require NTs.</td></tr>];
+        contacts = [<tr key="1" align="center"><td colSpan="3">No contacts to display.</td></tr>];
     }
 
     return (
         <div>
+            <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastBody} />
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Update Postage Status</Modal.Title>
