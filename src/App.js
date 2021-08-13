@@ -1,6 +1,6 @@
 import './App.css';
 import PostmanTable from "./components/PostmanTable";
-import {Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 
 function App(props) {
     const firebase = props.firebase;
@@ -15,7 +15,9 @@ function App(props) {
                 </Col>
                 <Col id="signInDetails">
                     <p>Welcome <strong>{user.email}</strong>, you are now signed in!</p>
-                    <p>Click <a href='/' onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
+                    <p>
+                        <Button variant="secondary" onClick={() => firebase.auth().signOut()}>Sign out</Button>
+                    </p>
                 </Col>
             </Row>
             <Row>

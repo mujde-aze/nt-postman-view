@@ -8,6 +8,7 @@
 #siteTitle h1{
     font-variant: small-caps;
     color: royalblue;
+    padding-top: 15px;
 }
 
 #signInDetails {
