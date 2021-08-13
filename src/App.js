@@ -1,6 +1,6 @@
 import './App.css';
 import PostmanTable from "./components/PostmanTable";
-import {Col, Container, DropdownButton, Dropdown, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 
 function App(props) {
     const firebase = props.firebase;
@@ -8,11 +8,11 @@ function App(props) {
     const user = firebase.auth().currentUser;
 
     return (
-        <Container>
-            <Row>
+        <Container fluid>
+            <Row id="header">
                 <Col>
                     <p>Welcome {user.email}, you are now signed in!</p>
-                    <p>Click <a href='blah' onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
+                    <p>Click <a href='/' onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
                 </Col>
             </Row>
             <Row>

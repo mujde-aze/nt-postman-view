@@ -1,1 +1,27 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
+
+#header {
+    -moz-box-shadow: 0 0 30px 5px #999;
+    -webkit-box-shadow: 0 0 30px 5px #999;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+table {
+    border: 1px solid;
+    border-radius: 18px;
+    -moz-border-radius: 18px;
+    padding: 15px;
+    -moz-box-shadow: 0 0 30px 5px #999;
+    -webkit-box-shadow: 0 0 30px 5px #999;
+}
+
+tr, td, thead, tbody, th {
+    border-style: unset !important;
+}
+
+#dataTable{
+    padding-top: 20px;
+}

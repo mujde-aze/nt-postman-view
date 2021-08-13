@@ -82,7 +82,7 @@ function PostmanTable(props) {
     }, [props.ntStatus, userIdUpdated]);
 
     return (
-        <div>
+        <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
             <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal} handleCloseModal={handleCloseModal}
