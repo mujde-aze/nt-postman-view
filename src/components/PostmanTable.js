@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import CustomToast from "./CustomToast";
 import ConfirmationModal from "./ConfirmationModal";
 import DataRows from "./DataRows";
+import LoadingSpinner from "./LoadingSpinner";
 
 function PostmanTable(props) {
     const functions = props.functions
@@ -12,6 +13,8 @@ function PostmanTable(props) {
     const [showModal, setShowModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
 
     function handleNoModalOption() {
         console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
@@ -35,11 +38,13 @@ function PostmanTable(props) {
 
     async function updatePostageStatus(userId, status) {
         try {
+            setShowUpdateSpinner(true);
             const updatePostageCallable = functions.httpsCallable("updateDtPostageStatus")
             await updatePostageCallable({
                 ntStatus: status,
                 userId: userId,
             });
+            setShowUpdateSpinner(false);
             setUserIdUpdated(userId);
         } catch (error) {
             setToastProps({
@@ -54,11 +59,13 @@ function PostmanTable(props) {
     useEffect(() => {
         (async () => {
             try {
+                setShowSpinner(true);
                 const getContactsCallable = functions.httpsCallable("getDtContacts")
                 const result = await getContactsCallable({
                     ntStatus: props.ntStatus,
                     assignedToMe: true,
                 })
+                setShowSpinner(false);
                 setData(result.data);
             } catch (error) {
                 if (error.code !== "not-found") {
@@ -78,8 +85,9 @@ function PostmanTable(props) {
         <div>
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
-            <ConfirmationModal showModal={showModal} handleCloseModal={handleCloseModal}
+            <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal} handleCloseModal={handleCloseModal}
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}/>
+            <LoadingSpinner showSpinner={showSpinner}/>
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -89,7 +97,7 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                    <DataRows data={data} confirmUpdate={confirmUpdate}/>
+                <DataRows data={data} confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
         </div>

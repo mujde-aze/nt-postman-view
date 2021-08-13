@@ -1,6 +1,18 @@
-import {Button, Modal} from "react-bootstrap";
+import {Button, Modal, Spinner} from "react-bootstrap";
 
 function ConfirmationModal(props) {
+    let buttonSpinner;
+    if (props.showUpdateSpinner) {
+        buttonSpinner = <Button variant="primary" onClick={props.handleYesModalOption}>
+            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
+            Yes
+        </Button>
+    } else {
+        buttonSpinner = <Button variant="primary" onClick={props.handleYesModalOption}>
+            Yes
+        </Button>
+    }
+
     return (
         <Modal show={props.showModal} onHide={props.handleCloseModal}>
             <Modal.Header closeButton>
@@ -11,9 +23,7 @@ function ConfirmationModal(props) {
                 <Button variant="secondary" onClick={props.handleNoModalOption}>
                     No
                 </Button>
-                <Button variant="primary" onClick={props.handleYesModalOption}>
-                    Yes
-                </Button>
+                {buttonSpinner}
             </Modal.Footer>
         </Modal>
     );
