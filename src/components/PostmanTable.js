@@ -1,6 +1,8 @@
-import {Button, Modal, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import CustomToast from "./Toast";
+import CustomToast from "./CustomToast";
+import ConfirmationModal from "./ConfirmationModal";
+import DataRows from "./DataRows";
 
 function PostmanTable(props) {
     const functions = props.functions
@@ -9,7 +11,7 @@ function PostmanTable(props) {
     const [userToUpdate, setUserToUpdate] = useState({userId: 0, ntStatus: undefined});
     const [showModal, setShowModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
-    const [toastBody, setToastBody] = useState("");
+    const [toastProps, setToastProps] = useState({body: "", background: "light"});
 
     function handleNoModalOption() {
         console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
@@ -40,7 +42,10 @@ function PostmanTable(props) {
             });
             setUserIdUpdated(userId);
         } catch (error) {
-            setToastBody("There was a problem updating the postage status. Please let the administrator know.");
+            setToastProps({
+                body: "There was a problem updating the postage status. Please let the administrator know.",
+                background: "warning"
+            });
             setShowToast(true)
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
@@ -51,13 +56,16 @@ function PostmanTable(props) {
             try {
                 const getContactsCallable = functions.httpsCallable("getDtContacts")
                 const result = await getContactsCallable({
-                    ntStatus: "blah",
+                    ntStatus: props.ntStatus,
                     assignedToMe: true,
                 })
                 setData(result.data);
             } catch (error) {
-                if(error.code !== "not-found"){
-                    setToastBody("There was a problem retrieving contacts. Please let the administrator know.");
+                if (error.code !== "not-found") {
+                    setToastProps({
+                        body: "There was a problem retrieving contacts. Please let the administrator know.",
+                        background: "warning"
+                    });
                     setShowToast(true)
                 }
                 console.error(`Problem retrieving contacts with nt status ${props.ntStatus}`);
@@ -66,36 +74,12 @@ function PostmanTable(props) {
         })();
     }, [props.ntStatus, userIdUpdated]);
 
-    let contacts = []
-    if (data.length > 0) {
-        contacts = data.map((item) => <tr key={item.id}>
-            <td>{item.name}</td>
-            <td>{item.address}</td>
-            <td>
-                <Button variant="warning" onClick={(e) => confirmUpdate(item.id, "nt_sent", e)}>NT Sent</Button>
-            </td>
-        </tr>);
-    } else {
-        contacts = [<tr key="1" align="center"><td colSpan="3">No contacts to display.</td></tr>];
-    }
-
     return (
         <div>
-            <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastBody} />
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Update Postage Status</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to set the Postage Status to {props.ntStatus}?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleNoModalOption}>
-                        No
-                    </Button>
-                    <Button variant="primary" onClick={handleYesModalOption}>
-                        Yes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
+                         background={toastProps.background}/>
+            <ConfirmationModal showModal={showModal} handleCloseModal={handleCloseModal}
+                               handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}/>
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -105,7 +89,7 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {contacts}
+                    <DataRows data={data} confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
         </div>
