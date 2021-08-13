@@ -10,8 +10,11 @@ function App(props) {
     return (
         <Container fluid>
             <Row id="header">
-                <Col>
-                    <p>Welcome {user.email}, you are now signed in!</p>
+                <Col id="siteTitle">
+                    <h1>Postman</h1>
+                </Col>
+                <Col id="signInDetails">
+                    <p>Welcome <strong>{user.email}</strong>, you are now signed in!</p>
                     <p>Click <a href='/' onClick={() => firebase.auth().signOut()}>here</a> to sign out.</p>
                 </Col>
             </Row>

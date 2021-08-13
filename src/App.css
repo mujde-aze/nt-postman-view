@@ -1,8 +1,17 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
 
 #header {
-    -moz-box-shadow: 0 0 30px 5px #999;
-    -webkit-box-shadow: 0 0 30px 5px #999;
+    -moz-box-shadow: 0 0 15px 2px #999;
+    -webkit-box-shadow: 0 0 15px 2px #999;
+}
+
+#siteTitle h1{
+    font-variant: small-caps;
+    color: royalblue;
+}
+
+#signInDetails {
+    text-align: end;
 }
 
 table {
@@ -14,8 +23,8 @@ table {
     border-radius: 18px;
     -moz-border-radius: 18px;
     padding: 15px;
-    -moz-box-shadow: 0 0 30px 5px #999;
-    -webkit-box-shadow: 0 0 30px 5px #999;
+    -moz-box-shadow: 0 0 15px 2px #999;
+    -webkit-box-shadow: 0 0 15px 2px #999;
 }
 
 tr, td, thead, tbody, th {
