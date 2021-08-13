@@ -1,6 +1,7 @@
 import './App.css';
 import PostmanTable from "./components/PostmanTable";
 import {Button, Col, Container, Row} from "react-bootstrap";
+import {PostageStatus} from "./models/PostageStatus";
 
 function App(props) {
     const firebase = props.firebase;
@@ -14,7 +15,7 @@ function App(props) {
                     <h1>Postman</h1>
                 </Col>
                 <Col id="signInDetails">
-                    <p>Welcome <strong>{user.email}</strong>, you are now signed in!</p>
+                    <p>Hi <strong>{user.email}</strong></p>
                     <p>
                         <Button variant="secondary" onClick={() => firebase.auth().signOut()}>Sign out</Button>
                     </p>
@@ -22,7 +23,7 @@ function App(props) {
             </Row>
             <Row>
                 <Col>
-                    <PostmanTable firebase={firebase} functions={functions} ntStatus="needs_nt"/>
+                    <PostmanTable firebase={firebase} functions={functions} ntStatus={PostageStatus.NEEDS_NT} />
                 </Col>
             </Row>
         </Container>

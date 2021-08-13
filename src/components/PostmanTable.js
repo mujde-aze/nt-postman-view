@@ -4,9 +4,9 @@ import CustomToast from "./CustomToast";
 import ConfirmationModal from "./ConfirmationModal";
 import DataRows from "./DataRows";
 import LoadingSpinner from "./LoadingSpinner";
+import {PostageStatus} from "../models/PostageStatus";
 
 function PostmanTable(props) {
-    const functions = props.functions
     const [data, setData] = useState([]);
     const [userIdUpdated, setUserIdUpdated] = useState(0);
     const [userToUpdate, setUserToUpdate] = useState({userId: 0, ntStatus: undefined});
@@ -39,7 +39,7 @@ function PostmanTable(props) {
     async function updatePostageStatus(userId, status) {
         try {
             setShowUpdateSpinner(true);
-            const updatePostageCallable = functions.httpsCallable("updateDtPostageStatus")
+            const updatePostageCallable = props.functions.httpsCallable("updateDtPostageStatus")
             await updatePostageCallable({
                 ntStatus: status,
                 userId: userId,
@@ -60,7 +60,7 @@ function PostmanTable(props) {
         (async () => {
             try {
                 setShowSpinner(true);
-                const getContactsCallable = functions.httpsCallable("getDtContacts")
+                const getContactsCallable = props.functions.httpsCallable("getDtContacts")
                 const result = await getContactsCallable({
                     ntStatus: props.ntStatus,
                     assignedToMe: true,
@@ -79,14 +79,16 @@ function PostmanTable(props) {
                 setData([]);
             }
         })();
-    }, [props.ntStatus, userIdUpdated]);
+    }, [props.functions, props.ntStatus, userIdUpdated]);
 
     return (
         <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
-            <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal} handleCloseModal={handleCloseModal}
-                               handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}/>
+            <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal}
+                               handleCloseModal={handleCloseModal}
+                               handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
+                               ntStatus={PostageStatus.NT_SENT}/>
             <LoadingSpinner showSpinner={showSpinner}/>
             <Table striped bordered hover>
                 <thead>

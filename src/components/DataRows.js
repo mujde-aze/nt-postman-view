@@ -1,4 +1,5 @@
 import {Button} from "react-bootstrap";
+import {PostageStatus} from "../models/PostageStatus";
 
 function DataRows(props) {
     if (props.data.length > 0) {
@@ -6,7 +7,8 @@ function DataRows(props) {
             <td>{item.name}</td>
             <td>{item.address}</td>
             <td>
-                <Button variant="primary" onClick={(e) => props.confirmUpdate(item.id, "nt_sent", e)}>NT Sent</Button>
+                <Button variant="primary" onClick={(e) => props.confirmUpdate(item.id, PostageStatus.NT_SENT, e)}>NT
+                    Sent</Button>
             </td>
         </tr>));
     } else {
