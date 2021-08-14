@@ -93,6 +93,7 @@ function PostmanTable(props) {
             <Table striped bordered hover>
                 <thead>
                 <tr>
+                    <th>Print</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>Update Postage Status</th>
