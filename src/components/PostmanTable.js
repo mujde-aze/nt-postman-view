@@ -5,6 +5,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import DataRows from "./DataRows";
 import LoadingSpinner from "./LoadingSpinner";
 import {PostageStatus} from "../models/PostageStatus";
+import ContactsPrinter from "./ContactsPrinter";
 
 function PostmanTable(props) {
     const [data, setData] = useState([]);
@@ -57,9 +58,9 @@ function PostmanTable(props) {
         }
     }
 
-    let printButton;
+    let contactsPrinter;
     if (contactsToPrint.length > 0) {
-        printButton = <Button variant="success">Print</Button>;
+        contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint} />
     }
 
     useEffect(() => {
@@ -109,7 +110,7 @@ function PostmanTable(props) {
                 <DataRows data={data} extractPrintList={setContactsToPrint} confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
-            {printButton}
+            {contactsPrinter}
         </div>
     );
 }
