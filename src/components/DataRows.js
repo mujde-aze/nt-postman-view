@@ -5,13 +5,13 @@ import {useState} from "react";
 function DataRows(props) {
     const [printList, setPrintList] = useState([]);
 
-    function addToPrintList(contactId, e) {
-        const runningList = printList;
+    function addToPrintList(contact, e) {
+        let runningList = printList.slice();
 
-        if (runningList.includes(contactId)) {
-            runningList.splice(runningList.indexOf(contactId), 1);
+        if (runningList.filter((selectedContact => selectedContact.id === contact.id)).length > 0) {
+            runningList = printList.filter(existingContact => existingContact.id !== contact.id);
         } else {
-            runningList.push(contactId);
+            runningList.push(contact);
         }
         setPrintList(runningList);
     }
@@ -20,7 +20,7 @@ function DataRows(props) {
         return (props.data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
-                    <InputGroup.Checkbox onClick={(e) => addToPrintList(contact.id, e)} aria-label="Add to print list"/>
+                    <InputGroup.Checkbox onClick={(e) => addToPrintList({id: contact.id, name: contact.name, address: contact.address}, e)} aria-label="Add to print list"/>
                 </InputGroup>
             </td>
             <td>{contact.name}</td>
