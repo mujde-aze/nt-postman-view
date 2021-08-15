@@ -1,4 +1,4 @@
-import {Table} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import CustomToast from "./CustomToast";
 import ConfirmationModal from "./ConfirmationModal";
@@ -15,6 +15,7 @@ function PostmanTable(props) {
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
     const [showSpinner, setShowSpinner] = useState(false);
     const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
+    const [contactsToPrint, setContactsToPrint] = useState([]);
 
     function handleNoModalOption() {
         console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
@@ -54,6 +55,11 @@ function PostmanTable(props) {
             setShowToast(true)
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
+    }
+
+    let printButton;
+    if (contactsToPrint.length > 0) {
+        printButton = <Button variant="success">Print</Button>;
     }
 
     useEffect(() => {
@@ -100,9 +106,10 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={data} confirmUpdate={confirmUpdate}/>
+                <DataRows data={data} extractPrintList={setContactsToPrint} confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
+            {printButton}
         </div>
     );
 }

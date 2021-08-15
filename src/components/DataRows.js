@@ -1,19 +1,23 @@
 import {Button, InputGroup} from "react-bootstrap";
 import {PostageStatus} from "../models/PostageStatus";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function DataRows(props) {
     const [printList, setPrintList] = useState([]);
 
-    function addToPrintList(contact, e) {
-        let runningList = printList.slice();
+    useEffect(() => {
+        props.extractPrintList(printList);
+    }, [printList, props]);
 
-        if (runningList.filter((selectedContact => selectedContact.id === contact.id)).length > 0) {
-            runningList = printList.filter(existingContact => existingContact.id !== contact.id);
+    function addToPrintList(contact, e) {
+        let newPrintList = printList.slice();
+
+        if (newPrintList.filter((existingContact => existingContact.id === contact.id)).length > 0) {
+            newPrintList = printList.filter(existingContact => existingContact.id !== contact.id);
         } else {
-            runningList.push(contact);
+            newPrintList.push(contact);
         }
-        setPrintList(runningList);
+        setPrintList(newPrintList);
     }
 
     if (props.data.length > 0) {
