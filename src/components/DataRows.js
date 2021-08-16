@@ -24,10 +24,11 @@ function DataRows(props) {
         return (props.data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
-                    <InputGroup.Checkbox onClick={(e) => addToPrintList({id: contact.id, name: contact.name, address: contact.address}, e)} aria-label="Add to print list"/>
+                    <InputGroup.Checkbox onClick={(e) => addToPrintList({id: contact.id, name: contact.name, phone: contact.phone, address: contact.address}, e)} aria-label="Add to print list"/>
                 </InputGroup>
             </td>
             <td>{contact.name}</td>
+            <td>{contact.phone}</td>
             <td>{contact.address}</td>
             <td>
                 <Button variant="primary" onClick={(e) => props.confirmUpdate(contact.id, PostageStatus.NT_SENT, e)}>NT
@@ -36,7 +37,7 @@ function DataRows(props) {
         </tr>));
     } else {
         return ([<tr key="1" align="center">
-            <td colSpan="4">No contacts to display.</td>
+            <td colSpan="5">No contacts to display.</td>
         </tr>]);
     }
 }

@@ -103,6 +103,7 @@ function PostmanTable(props) {
                 <tr>
                     <th></th>
                     <th>Name</th>
+                    <th>Phone</th>
                     <th>Address</th>
                     <th>Update Postage Status</th>
                 </tr>
