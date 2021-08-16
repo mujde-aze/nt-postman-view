@@ -36,7 +36,7 @@ function DataRows(props) {
         </tr>));
     } else {
         return ([<tr key="1" align="center">
-            <td colSpan="3">No contacts to display.</td>
+            <td colSpan="4">No contacts to display.</td>
         </tr>]);
     }
 }

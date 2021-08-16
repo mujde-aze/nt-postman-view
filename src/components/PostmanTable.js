@@ -1,4 +1,4 @@
-import {Button, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import CustomToast from "./CustomToast";
 import ConfirmationModal from "./ConfirmationModal";
@@ -60,7 +60,7 @@ function PostmanTable(props) {
 
     let contactsPrinter;
     if (contactsToPrint.length > 0) {
-        contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint} />
+        contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint}/>
     }
 
     useEffect(() => {
@@ -97,6 +97,7 @@ function PostmanTable(props) {
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
                                ntStatus={PostageStatus.NT_SENT}/>
             <LoadingSpinner showSpinner={showSpinner}/>
+            <p>Contacts assigned to me that require NTs to be posted.</p>
             <Table striped bordered hover>
                 <thead>
                 <tr>
