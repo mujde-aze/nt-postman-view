@@ -53,7 +53,8 @@ function PostmanTable(props) {
                 body: "There was a problem updating the postage status. Please let the administrator know.",
                 background: "warning"
             });
-            setShowToast(true)
+            setShowToast(true);
+            setShowSpinner(false);
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
     }
@@ -80,7 +81,8 @@ function PostmanTable(props) {
                         body: "There was a problem retrieving contacts. Please let the administrator know.",
                         background: "warning"
                     });
-                    setShowToast(true)
+                    setShowToast(true);
+                    setShowSpinner(false);
                 }
                 console.error(`Problem retrieving contacts with nt status ${props.ntStatus}`);
                 setData([]);

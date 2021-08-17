@@ -9,7 +9,7 @@ function DataRows(props) {
         props.extractPrintList(printList);
     }, [printList, props]);
 
-    function addToPrintList(contact, e) {
+    function updatePrintList(contact, e) {
         let newPrintList = printList.slice();
 
         if (newPrintList.filter((existingContact => existingContact.id === contact.id)).length > 0) {
@@ -24,7 +24,12 @@ function DataRows(props) {
         return (props.data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
-                    <InputGroup.Checkbox onClick={(e) => addToPrintList({id: contact.id, name: contact.name, phone: contact.phone, address: contact.address}, e)} aria-label="Add to print list"/>
+                    <InputGroup.Checkbox onClick={(e) => updatePrintList({
+                        id: contact.id,
+                        name: contact.name,
+                        phone: contact.phone,
+                        address: contact.address
+                    }, e)} aria-label="Add to print list"/>
                 </InputGroup>
             </td>
             <td>{contact.name}</td>
