@@ -6,6 +6,7 @@ import DataRows from "./DataRows";
 import LoadingSpinner from "./LoadingSpinner";
 import {PostageStatus} from "../models/PostageStatus";
 import ContactsPrinter from "./ContactsPrinter";
+import CustomPagination from "./CustomPagination";
 
 function PostmanTable(props) {
     const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ function PostmanTable(props) {
     const [showSpinner, setShowSpinner] = useState(false);
     const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
     const [contactsToPrint, setContactsToPrint] = useState([]);
+    const [pageData, setPageData] = useState([]);
 
     function handleNoModalOption() {
         console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
@@ -111,10 +113,13 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={data} extractPrintList={setContactsToPrint} confirmUpdate={confirmUpdate}/>
+                <DataRows data={pageData} extractPrintList={setContactsToPrint} confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
-            {contactsPrinter}
+            <div id="printButton">{contactsPrinter}</div>
+            <div id="customPagination">
+                <CustomPagination contacts={data} updatePage={setPageData}/>
+            </div>
         </div>
     );
 }

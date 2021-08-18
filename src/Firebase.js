@@ -20,8 +20,9 @@ if (process.env.REACT_APP_DEV_MODE) {
     const auth = Firebase.auth();
     auth.useEmulator("http://localhost:9099")
     functions.useEmulator("localhost", 5001);
+} else {
+    const appCheck = Firebase.appCheck();
+    appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)
 }
-/*const appCheck = Firebase.appCheck();
-appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true)*/
 
 export default Firebase;

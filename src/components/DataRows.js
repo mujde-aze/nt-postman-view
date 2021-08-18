@@ -4,9 +4,17 @@ import {useEffect, useState} from "react";
 
 function DataRows(props) {
     const [printList, setPrintList] = useState([]);
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         props.extractPrintList(printList);
+
+        printList.forEach((item) => {
+            const checkbox = document.getElementById(item.id);
+            if (checkbox !== null && checkbox.checked === false) {
+                checkbox.checked = true;
+            }
+        });
     }, [printList, props]);
 
     function updatePrintList(contact, e) {
@@ -20,11 +28,11 @@ function DataRows(props) {
         setPrintList(newPrintList);
     }
 
-    if (props.data.length > 0) {
+    if (props.data !== undefined) {
         return (props.data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
-                    <InputGroup.Checkbox onClick={(e) => updatePrintList({
+                    <InputGroup.Checkbox id={contact.id} onClick={(e) => updatePrintList({
                         id: contact.id,
                         name: contact.name,
                         phone: contact.phone,

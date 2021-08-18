@@ -5,7 +5,7 @@
     -webkit-box-shadow: 0 0 15px 2px #999;
 }
 
-#siteTitle h1{
+#siteTitle h1 {
     font-variant: small-caps;
     color: royalblue;
     padding-top: 15px;
@@ -20,6 +20,7 @@ table {
     border-collapse: separate;
     border-spacing: 0;
 }
+
 table {
     border: 1px solid;
     border-radius: 18px;
@@ -33,6 +34,14 @@ tr, td, thead, tbody, th {
     border-style: unset !important;
 }
 
-#dataTable{
+#dataTable {
     padding-top: 20px;
+}
+
+#printButton {
+    float: left;
+}
+
+#customPagination {
+    float: right;
 }
