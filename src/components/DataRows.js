@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 
 function DataRows(props) {
     const [printList, setPrintList] = useState([]);
-    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         props.extractPrintList(printList);
