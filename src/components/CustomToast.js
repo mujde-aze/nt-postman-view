@@ -6,8 +6,9 @@ function CustomToast(props) {
     return (
         <Row>
             <Col xs={6}>
-                <ToastContainer position="top-center" >
-                    <Toast onClose={() => props.setShowToast(false)} bg={props.background} show={props.showToast} delay={5000} autohide>
+                <ToastContainer position="top-center">
+                    <Toast onClose={() => props.setShowToast(false)} bg={props.background} show={props.showToast}
+                           delay={5000} autohide>
                         <Toast.Body>{props.toastBody}</Toast.Body>
                     </Toast>
                 </ToastContainer>

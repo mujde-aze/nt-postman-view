@@ -8,7 +8,7 @@ function CustomPagination(props) {
 
     let items = [];
     const itemsPerPage = 10;
-    const numberOfPages = Math.ceil(contacts.length/itemsPerPage);
+    const numberOfPages = Math.ceil(contacts.length / itemsPerPage);
     for (let number = 1; number <= numberOfPages; number++) {
         items.push(
             <Pagination.Item key={number} active={number === active} onClick={(e) => setActive(number)}>

@@ -1,5 +1,6 @@
 import {Button} from "react-bootstrap";
 import {jsPDF} from "jspdf";
+import "../models/Amiri-Regular-normal";
 
 function ContactsPrinter(props) {
     function formatContacts(contacts) {
@@ -16,6 +17,7 @@ function ContactsPrinter(props) {
 
     function printContacts(e) {
         const doc = new jsPDF();
+        doc.setFont("Amiri-Regular");
         doc.setFontSize(14);
         let column1 = [];
         let column2 = [];
