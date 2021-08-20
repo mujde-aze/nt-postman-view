@@ -20,8 +20,8 @@ function ConfirmationModal(props) {
                 <Modal.Title>Update Postage Status</Modal.Title>
             </Modal.Header>
             <Modal.Body>Are you sure you want to set the Postage Status
-                to {PostageStatus.getDisplayName(props.ntStatus)}? If yes, please click 'No' then remove from the
-                print list before updating the status.</Modal.Body>
+                to {PostageStatus.getDisplayName(props.ntStatus)}? Before clicking 'Yes', please ensure this contact
+                is <strong>not</strong> selected for printing.</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleNoModalOption}>
                     No
