@@ -1,5 +1,6 @@
 import {Pagination} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 
 function CustomPagination(props) {
     const {contacts, updatePage} = props;
@@ -37,15 +38,6 @@ function CustomPagination(props) {
     return (
         <Pagination>{items}</Pagination>
     );
-}
-
-function calculateMaxIndexOnPage(startingIndex, itemsPerPage, maxNumberOfItems) {
-    const potentialMaxIndexPerPage = startingIndex + itemsPerPage;
-    if ((potentialMaxIndexPerPage) <= (maxNumberOfItems)) {
-        return potentialMaxIndexPerPage;
-    } else {
-        return maxNumberOfItems;
-    }
 }
 
 export default CustomPagination;
