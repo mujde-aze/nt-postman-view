@@ -8,8 +8,7 @@ Allow multipliers to view contacts that require NTs.
 - [Getting Started](#markdown-header-getting-started)
     - [Prerequisites](#markdown-header-prerequisites)
     - [Installing](#markdown-header-installing)
-- [Running the tests](#markdown-header-running-the-tests) 
-    - [And coding style tests](#markdown-header-and-coding-style-tests)
+- [Running the tests](#markdown-header-running-the-tests)
 - [Branching Model](#markdown-header-branching-model)
 - [Deployment](#markdown-header-deployment)
 - [Built With](#markdown-header-built-with)
@@ -42,14 +41,6 @@ To run locally, issue `npm run start`. This should launch the application in a n
 ## Running the tests
 
 To run the tests, issue `npm run test`.
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Branching Model
 We use [GitHubFlow](https://guides.github.com/introduction/flow/) for this project.
