@@ -112,7 +112,9 @@ function PostmanTable(props) {
                 <tbody>
                 <DataRows data={pageData} printList={contactsToPrint}
                           setPrintList={setContactsToPrint} printButtonDisabled={printListButtonDisabled}
-                          setPrintButtonDisabled={setPrintListButtonDisabled}/>
+                          setPrintButtonDisabled={setPrintListButtonDisabled}
+                          updateButtonDisabled={updateButtonDisabled}
+                          setUpdateButtonDisabled={setUpdateButtonDisabled}/>
                 </tbody>
             </Table>
             <div id="printButton">
