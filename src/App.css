@@ -45,3 +45,8 @@ tr, td, thead, tbody, th {
 #customPagination {
     float: right;
 }
+
+#statusSelect {
+    padding-top: 20px;
+    text-align: end;
+}

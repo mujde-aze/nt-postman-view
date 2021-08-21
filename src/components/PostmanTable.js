@@ -99,9 +99,9 @@ function PostmanTable(props) {
             <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal}
                                handleCloseModal={handleCloseModal}
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
-                               ntStatus={PostageStatus.NT_SENT}/>
+                               transitionToStatus={PostageStatus.getTransitionState(props.ntStatus)}/>
             <LoadingSpinner showSpinner={showSpinner}/>
-            <p>Contacts assigned to me that require NTs to be posted.</p>
+            <p>Contacts assigned to me with status <strong>{PostageStatus.getDisplayName(props.ntStatus)}</strong>.</p>
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -113,7 +113,8 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={pageData} extractPrintList={setContactsToPrint} confirmUpdate={confirmUpdate}/>
+                <DataRows data={pageData} currentStatus={props.ntStatus} extractPrintList={setContactsToPrint}
+                          confirmUpdate={confirmUpdate}/>
                 </tbody>
             </Table>
             <div id="printButton">{contactsPrinter}</div>

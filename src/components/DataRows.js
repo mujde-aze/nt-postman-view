@@ -4,9 +4,11 @@ import {useEffect, useState} from "react";
 
 function DataRows(props) {
     const [printList, setPrintList] = useState([]);
+    const {extractPrintList, currentStatus, data, confirmUpdate} = props;
+    const transitionState = PostageStatus.getTransitionState(currentStatus);
 
     useEffect(() => {
-        props.extractPrintList(printList);
+        extractPrintList(printList);
 
         printList.forEach((item) => {
             const checkbox = document.getElementById(item.id);
@@ -14,7 +16,7 @@ function DataRows(props) {
                 checkbox.checked = true;
             }
         });
-    }, [printList, props]);
+    }, [printList, extractPrintList]);
 
     function updatePrintList(contact, e) {
         let newPrintList = printList.slice();
@@ -27,8 +29,8 @@ function DataRows(props) {
         setPrintList(newPrintList);
     }
 
-    if (props.data !== undefined) {
-        return (props.data.map((contact) => <tr key={contact.id}>
+    if (data !== undefined) {
+        return (data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
                     <InputGroup.Checkbox id={contact.id} onClick={(e) => updatePrintList({
@@ -43,8 +45,8 @@ function DataRows(props) {
             <td>{contact.phone}</td>
             <td>{contact.address}</td>
             <td>
-                <Button variant="primary" onClick={(e) => props.confirmUpdate(contact.id, PostageStatus.NT_SENT, e)}>NT
-                    Sent</Button>
+                <Button variant="primary"
+                        onClick={(e) => confirmUpdate(contact.id, transitionState, e)}>{PostageStatus.getDisplayName(transitionState)}</Button>
             </td>
         </tr>));
     } else {
