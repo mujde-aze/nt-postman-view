@@ -40,6 +40,11 @@ tr, td, thead, tbody, th {
 
 #printButton {
     float: left;
+    padding-right: 30px;
+}
+
+#bulkUpdateButton {
+    float: left;
 }
 
 #customPagination {

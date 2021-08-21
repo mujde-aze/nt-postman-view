@@ -5,7 +5,7 @@ import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 
 function ContactsPrinter(props) {
 
-    function printContacts(e) {
+    function printContacts() {
         const contactsPerPage = 8;
         const doc = new jsPDF();
         doc.setFont("Amiri-Regular");
@@ -25,10 +25,12 @@ function ContactsPrinter(props) {
             doc.addPage();
         }
         doc.save("contacts.pdf");
+        props.setUpdateButtonDisabled(false);
     }
 
     return (
-        <Button variant="success" onClick={(e) => printContacts(e)}>Save to print list</Button>
+        <Button variant="success" onClick={() => printContacts()} disabled={props.buttonDisabled}>Save to print
+            list</Button>
     );
 }
 

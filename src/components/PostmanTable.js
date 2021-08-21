@@ -1,4 +1,4 @@
-import {Table} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import CustomToast from "./CustomToast";
 import ConfirmationModal from "./ConfirmationModal";
@@ -10,8 +10,6 @@ import CustomPagination from "./CustomPagination";
 
 function PostmanTable(props) {
     const [data, setData] = useState([]);
-    const [userIdUpdated, setUserIdUpdated] = useState(0);
-    const [userToUpdate, setUserToUpdate] = useState({userId: 0, ntStatus: undefined});
     const [showModal, setShowModal] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
@@ -19,25 +17,30 @@ function PostmanTable(props) {
     const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
     const [contactsToPrint, setContactsToPrint] = useState([]);
     const [pageData, setPageData] = useState([]);
+    const [contactsUpdated, setContactsUpdated] = useState(false);
+    const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
+    const [updateButtonDisabled, setUpdateButtonDisabled] = useState(true);
 
     function handleNoModalOption() {
-        console.log(`Will not update ${userToUpdate.userId} with status ${userToUpdate.ntStatus}`);
+        console.log(`Will not update the ${contactsToPrint.length} selected contacts to status ${PostageStatus.getTransitionState(props.ntStatus)}`);
         handleCloseModal();
     }
 
-    async function handleYesModalOption() {
-        await updatePostageStatus(userToUpdate.userId, userToUpdate.ntStatus);
+    function handleYesModalOption() {
+        if (contactsToPrint.length !== undefined && contactsToPrint.length > 0) {
+            contactsToPrint.forEach(async (contact) =>
+                await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus))
+            );
+        }
         handleCloseModal();
     }
 
     function handleCloseModal() {
-        setUserToUpdate({userId: 0, ntStatus: undefined});
         setShowModal(false);
     }
 
-    function confirmUpdate(userId, status) {
+    function confirmUpdate() {
         setShowModal(true);
-        setUserToUpdate({userId: userId, ntStatus: status});
     }
 
     async function updatePostageStatus(userId, status) {
@@ -49,7 +52,6 @@ function PostmanTable(props) {
                 userId: userId,
             });
             setShowUpdateSpinner(false);
-            setUserIdUpdated(userId);
         } catch (error) {
             setToastProps({
                 body: "There was a problem updating the postage status. Please let the administrator know.",
@@ -59,11 +61,7 @@ function PostmanTable(props) {
             setShowSpinner(false);
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
-    }
-
-    let contactsPrinter;
-    if (contactsToPrint.length > 0) {
-        contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint}/>
+        setContactsUpdated(true);
     }
 
     useEffect(() => {
@@ -90,14 +88,14 @@ function PostmanTable(props) {
                 setData([]);
             }
         })();
-    }, [props.functions, props.ntStatus, userIdUpdated]);
+    }, [props.functions, props.ntStatus]);
 
     return (
         <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
             <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal}
-                               handleCloseModal={handleCloseModal}
+                               handleCloseModal={handleCloseModal} contactsSelected={contactsToPrint.length}
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
                                transitionToStatus={PostageStatus.getTransitionState(props.ntStatus)}/>
             <LoadingSpinner showSpinner={showSpinner}/>
@@ -105,19 +103,27 @@ function PostmanTable(props) {
             <Table striped bordered hover>
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>Action</th>
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Address</th>
-                    <th>Update Postage Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={pageData} currentStatus={props.ntStatus} extractPrintList={setContactsToPrint}
-                          confirmUpdate={confirmUpdate}/>
+                <DataRows data={pageData} printList={contactsToPrint}
+                          setPrintList={setContactsToPrint} printButtonDisabled={printListButtonDisabled}
+                          setPrintButtonDisabled={setPrintListButtonDisabled}/>
                 </tbody>
             </Table>
-            <div id="printButton">{contactsPrinter}</div>
+            <div id="printButton">
+                <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
+                                 setUpdateButtonDisabled={setUpdateButtonDisabled}/>
+            </div>
+            <div id="bulkUpdateButton">
+                <Button variant="success"
+                        onClick={() => confirmUpdate()}
+                        disabled={updateButtonDisabled}>Update {contactsToPrint.length} contacts</Button>
+            </div>
             <div id="customPagination">
                 <CustomPagination contacts={data} updatePage={setPageData}/>
             </div>

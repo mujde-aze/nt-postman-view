@@ -19,9 +19,9 @@ function ConfirmationModal(props) {
             <Modal.Header closeButton>
                 <Modal.Title>Update Postage Status</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Are you sure you want to set the Postage Status
-                to {PostageStatus.getDisplayName(props.transitionToStatus)}? Before clicking 'Yes', please ensure this contact
-                is <strong>not</strong> selected for printing.</Modal.Body>
+            <Modal.Body>Are you sure you want to set the Postage Status of the {props.contactsSelected} selected contacts
+                to {PostageStatus.getDisplayName(props.transitionToStatus)}? Before clicking 'Yes', please ensure that you have already
+                printed the labels.</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleNoModalOption}>
                     No
