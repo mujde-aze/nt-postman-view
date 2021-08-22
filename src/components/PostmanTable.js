@@ -62,6 +62,7 @@ function PostmanTable(props) {
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
         setContactsUpdated(true);
+        setContactsToPrint([]);
     }
 
     useEffect(() => {
@@ -88,7 +89,7 @@ function PostmanTable(props) {
                 setData([]);
             }
         })();
-    }, [props.functions, props.ntStatus]);
+    }, [props.functions, props.ntStatus, contactsUpdated]);
 
     return (
         <div id="dataTable">
