@@ -23,28 +23,28 @@ function PostmanTable(props) {
     const [displayPrintButton, setDisplayPrintButton] = useState(true);
     const [contactsPrinted, setContactsPrinted] = useState(false);
 
-    ensureCurrentListBeforeUpdate();
-
-    function ensureCurrentListBeforeUpdate() {
-        if (props.ntStatus === PostageStatus.NEEDS_NT) {
-            if (prevNumberOfSelectedContact !== selectedContacts.length) {
-                if (updateButtonDisabled === false) {
-                    setUpdateButtonDisabled(true);
-                }
-                setPrevNumberOfSelectedContact(selectedContacts.length);
-            }
-
-            if (printListButtonDisabled === true && selectedContacts.length > 0) {
-                setPrintListButtonDisabled(false);
-            }
-
-            if (printListButtonDisabled === false && selectedContacts.length === 0) {
-                setPrintListButtonDisabled(true);
-            }
-
-            if (updateButtonDisabled === false && selectedContacts.length === 0) {
+    /**
+     * Certain conditions need to be met when the status is 'needs_nt':
+     * 1. The 'Save to print list' button must be clicked before the update button can be selected.
+     * 2. The 'Save to print list' button must only be enabled if there is at least 1 contact selected.
+     * 3. The update button must be disabled as long as the 'Save to print list' button is disabled and no contacts
+     * have been selected.
+     * */
+    if (props.ntStatus === PostageStatus.NEEDS_NT) {
+        if (prevNumberOfSelectedContact !== selectedContacts.length) {
+            if (updateButtonDisabled === false) {
                 setUpdateButtonDisabled(true);
             }
+            setPrevNumberOfSelectedContact(selectedContacts.length);
+        }
+
+        if (printListButtonDisabled === true && selectedContacts.length > 0) {
+            setPrintListButtonDisabled(false);
+        }
+
+        if (printListButtonDisabled === false && selectedContacts.length === 0) {
+            setPrintListButtonDisabled(true);
+            setUpdateButtonDisabled(true);
         }
     }
 
@@ -122,10 +122,6 @@ function PostmanTable(props) {
 
     useEffect(() => {
         (async () => {
-            if (props.ntStatus === PostageStatus.NT_SENT) {
-                setContactsUpdated(false);
-            }
-
             try {
                 setShowSpinner(true);
                 const getContactsCallable = props.functions.httpsCallable("getDtContacts")
@@ -149,6 +145,10 @@ function PostmanTable(props) {
                 setData([]);
             }
         })();
+
+        return () => {
+            setContactsUpdated(false);
+        }
     }, [props.functions, props.ntStatus, contactsUpdated]);
 
     return (
