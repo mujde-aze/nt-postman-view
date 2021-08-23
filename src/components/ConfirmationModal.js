@@ -2,41 +2,41 @@ import {Button, Modal} from "react-bootstrap";
 import {PostageStatus} from "../models/PostageStatus";
 
 function ConfirmationModal(props) {
-    const printConfirmation = props.transitionToStatus === PostageStatus.NT_SENT ?
+  const printConfirmation = props.transitionToStatus === PostageStatus.NT_SENT ?
         "Before clicking 'Yes', please ensure that you have already printed the label." : "";
 
-    let modalFooter = <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleNoModalOption}>
+  let modalFooter = <Modal.Footer>
+    <Button variant="secondary" onClick={props.handleNoModalOption}>
             No
-        </Button>
-        <Button variant="primary" onClick={props.handleYesModalOption}>
+    </Button>
+    <Button variant="primary" onClick={props.handleYesModalOption}>
             Yes
-        </Button>
-    </Modal.Footer>;
+    </Button>
+  </Modal.Footer>;
 
-    let modalMessage;
-    if (props.contactsSelected === 1) {
-        modalMessage = `Are you sure you want to set the Postage Status of the selected contact
+  let modalMessage;
+  if (props.contactsSelected === 1) {
+    modalMessage = `Are you sure you want to set the Postage Status of the selected contact
         to ${PostageStatus.getDisplayName(props.transitionToStatus)}? ${printConfirmation}`;
-    } else if (props.contactsSelected > 1) {
-        modalMessage = `Are you sure you want to set the Postage Status of the ${props.contactsSelected} selected contacts
+  } else if (props.contactsSelected > 1) {
+    modalMessage = `Are you sure you want to set the Postage Status of the ${props.contactsSelected} selected contacts
         to ${PostageStatus.getDisplayName(props.transitionToStatus)}? ${printConfirmation}`;
-    } else {
-        modalMessage = "That's odd, you should not be here without selecting a contact. Please select 'Cancel' to close this modal and speak to your administrator.";
-        modalFooter = <Button variant="secondary" onClick={props.handleCloseModal}>
+  } else {
+    modalMessage = "That's odd, you should not be here without selecting a contact. Please select 'Cancel' to close this modal and speak to your administrator.";
+    modalFooter = <Button variant="secondary" onClick={props.handleCloseModal}>
             Cancel
-        </Button>;
-    }
+    </Button>;
+  }
 
-    return (
-        <Modal show={props.showModal} onHide={props.handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Update Postage Status</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{modalMessage}</Modal.Body>
-            {modalFooter}
-        </Modal>
-    );
+  return (
+    <Modal show={props.showModal} onHide={props.handleCloseModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>Update Postage Status</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{modalMessage}</Modal.Body>
+      {modalFooter}
+    </Modal>
+  );
 }
 
 export default ConfirmationModal;
