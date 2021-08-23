@@ -7,22 +7,20 @@ function ContactsPrinter(props) {
     const {setContactsPrinted, contactsSelected} = props;
 
     function printContacts() {
-        const contactsPerPage = 8;
+        const contactsPerPage = 11;
         const doc = new jsPDF();
         doc.setFont("Amiri-Regular");
         doc.setFontSize(14);
 
-        const contactsColumn = splitContactsInHalf(contactsSelected);
-        const totalNumberOfRows = Math.max(contactsColumn.sizeOfColumn1, contactsColumn.sizeOfColumn2);
+        const totalNumberOfRows = contactsSelected.length;
         const numberOfPdfPages = Math.ceil(totalNumberOfRows / contactsPerPage);
 
         for (let page = 1; page <= numberOfPdfPages; page++) {
             const startingIndex = (page - 1) * contactsPerPage;
             const maxIndex = calculateMaxIndexOnPage(startingIndex, contactsPerPage, totalNumberOfRows);
-            const pageContacts = distributeContactsOnPage(startingIndex, maxIndex, contactsColumn);
+            const pageContacts = distributeContactsOnPage(startingIndex, maxIndex, contactsSelected);
 
-            doc.text(formatContacts(pageContacts.column1OnPage), 5, 10);
-            doc.text(formatContacts(pageContacts.column2OnPage), 100, 10);
+            doc.text(formatContacts(pageContacts), 5, 20);
             doc.addPage();
         }
         doc.save("contacts.pdf");
@@ -35,49 +33,21 @@ function ContactsPrinter(props) {
     );
 }
 
-function splitContactsInHalf(contacts) {
-    let column1 = [];
-    let column2 = [];
-    contacts.forEach((contact, index) => {
-        if ((index % 2) === 0) {
-            column1.push(contact);
-        } else {
-            column2.push(contact);
-        }
-    });
-
-    return {
-        column1: column1,
-        sizeOfColumn1: column1.length,
-        column2: column2,
-        sizeOfColumn2: column2.length,
-    }
-}
-
-function distributeContactsOnPage(startingIndex, maxIndex, contactsColumn) {
-    const contactsInColumn1OnPage = [];
-    const contactsInColumn2OnPage = [];
+function distributeContactsOnPage(startingIndex, maxIndex, contacts) {
+    const contactsOnPage = [];
     for (let contactToPrint = startingIndex; contactToPrint < maxIndex; contactToPrint++) {
-        if (contactsColumn.sizeOfColumn1 > contactToPrint) {
-            contactsInColumn1OnPage.push(contactsColumn.column1[contactToPrint]);
-        }
-        if (contactsColumn.sizeOfColumn2 > contactToPrint) {
-            contactsInColumn2OnPage.push(contactsColumn.column2[contactToPrint]);
+        if (contacts.length > contactToPrint) {
+            contactsOnPage.push(contacts[contactToPrint]);
         }
     }
 
-    return {
-        column1OnPage: contactsInColumn1OnPage,
-        column2OnPage: contactsInColumn2OnPage,
-    }
+    return contactsOnPage
 }
 
 function formatContacts(contacts) {
     return contacts.map((contact) =>
         `
-            ${contact.name}
-            ${contact.address}
-            Ph: ${contact.phone}
+            ${contact.name} - ${contact.address} - ${contact.phone}
             
             
             `
