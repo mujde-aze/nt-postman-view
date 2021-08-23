@@ -11,7 +11,7 @@ function ContactsPrinter(props) {
         doc.setFont("Amiri-Regular");
         doc.setFontSize(14);
 
-        const contactsColumn = splitContactsInHalf(props.contactsToPrint);
+        const contactsColumn = splitContactsInHalf(props.contactsSelected);
         const totalNumberOfRows = Math.max(contactsColumn.sizeOfColumn1, contactsColumn.sizeOfColumn2);
         const numberOfPdfPages = Math.ceil(totalNumberOfRows / contactsPerPage);
 

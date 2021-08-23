@@ -14,8 +14,8 @@ function PostmanTable(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
     const [showSpinner, setShowSpinner] = useState(false);
-    const [contactsToPrint, setContactsToPrint] = useState([]);
-    const [prevPrintSize, setPrevPrintSize] = useState(0);
+    const [selectedContacts, setSelectedContacts] = useState([]);
+    const [prevNumberOfSelectedContact, setPrevNumberOfSelectedContact] = useState(0);
     const [pageData, setPageData] = useState([]);
     const [contactsUpdated, setContactsUpdated] = useState(true);
     const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
@@ -26,42 +26,42 @@ function PostmanTable(props) {
 
     function ensureCurrentListBeforeUpdate() {
         if (props.ntStatus === PostageStatus.NEEDS_NT) {
-            if (prevPrintSize !== contactsToPrint.length) {
+            if (prevNumberOfSelectedContact !== selectedContacts.length) {
                 if (updateButtonDisabled === false) {
                     setUpdateButtonDisabled(true);
                 }
-                setPrevPrintSize(contactsToPrint.length);
+                setPrevNumberOfSelectedContact(selectedContacts.length);
             }
 
-            if (printListButtonDisabled === true && contactsToPrint.length > 0) {
+            if (printListButtonDisabled === true && selectedContacts.length > 0) {
                 setPrintListButtonDisabled(false);
             }
 
-            if (printListButtonDisabled === false && contactsToPrint.length === 0) {
+            if (printListButtonDisabled === false && selectedContacts.length === 0) {
                 setPrintListButtonDisabled(true);
             }
 
-            if (updateButtonDisabled === false && contactsToPrint.length === 0) {
+            if (updateButtonDisabled === false && selectedContacts.length === 0) {
                 setUpdateButtonDisabled(true);
             }
         }
     }
 
     function handleNoModalOption() {
-        console.log(`Will not update the ${contactsToPrint.length} selected contacts to status ${PostageStatus.getTransitionState(props.ntStatus)}`);
+        console.log(`Will not update the ${selectedContacts.length} selected contacts to status ${PostageStatus.getTransitionState(props.ntStatus)}`);
         handleCloseModal();
     }
 
     function handleYesModalOption() {
-        if (contactsToPrint.length !== undefined && contactsToPrint.length > 0) {
+        if (selectedContacts.length !== undefined && selectedContacts.length > 0) {
             setShowSpinner(true);
-            contactsToPrint.forEach(async (contact) => {
+            selectedContacts.forEach(async (contact) => {
                     await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus));
                 }
             );
             setContactsUpdated(true);
             setShowSpinner(false);
-            setContactsToPrint([]);
+            setSelectedContacts([]);
         }
         handleCloseModal();
     }
@@ -93,7 +93,7 @@ function PostmanTable(props) {
 
     useEffect(() => {
         setContactsUpdated(true);
-        setContactsToPrint([]);
+        setSelectedContacts([]);
         if (props.ntStatus === PostageStatus.NEEDS_NT) {
             setDisplayPrintButton(true);
         } else {
@@ -137,21 +137,12 @@ function PostmanTable(props) {
         })();
     }, [props.functions, props.ntStatus, contactsUpdated]);
 
-    /*  let contactsPrinter;
-      if (props.ntStatus === PostageStatus.NEEDS_NT) {
-          contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
-                                             setUpdateButtonDisabled={setUpdateButtonDisabled}
-                                             setContactsUpdated={setContactsUpdated} ntStatus={props.ntStatus}/>;
-      } else {
-          contactsPrinter = <span/>;
-      }*/
-
     return (
         <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
             <ConfirmationModal showModal={showModal} handleCloseModal={handleCloseModal}
-                               contactsSelected={contactsToPrint.length}
+                               contactsSelected={selectedContacts.length}
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
                                transitionToStatus={PostageStatus.getTransitionState(props.ntStatus)}/>
             <LoadingSpinner showSpinner={showSpinner}/>
@@ -166,13 +157,13 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={pageData} printList={contactsToPrint}
-                          setPrintList={setContactsToPrint}/>
+                <DataRows data={pageData} printList={selectedContacts}
+                          setPrintList={setSelectedContacts}/>
                 </tbody>
             </Table>
             <div id="printButton">
                 {displayPrintButton ?
-                    <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
+                    <ContactsPrinter contactsSelected={selectedContacts} buttonDisabled={printListButtonDisabled}
                                      setUpdateButtonDisabled={setUpdateButtonDisabled}
                                      setContactsUpdated={setContactsUpdated} ntStatus={props.ntStatus}/>
                     : undefined
@@ -181,7 +172,7 @@ function PostmanTable(props) {
             <div id="bulkUpdateButton">
                 <Button variant="success"
                         onClick={() => confirmUpdate()}
-                        disabled={updateButtonDisabled}>Update {contactsToPrint.length} contacts
+                        disabled={updateButtonDisabled}>Update {selectedContacts.length} contacts
                     to {PostageStatus.getDisplayName(PostageStatus.getTransitionState(props.ntStatus))}</Button>
             </div>
             <div id="customPagination">
