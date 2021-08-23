@@ -39,7 +39,7 @@ function DataRows(props) {
         setPrintList(newPrintList);
     }
 
-    if (data !== undefined) {
+    if (data.length > 0) {
         return (data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">

@@ -32,8 +32,18 @@ function CustomPagination(props) {
     }, [contacts, numberOfPages, pageNavigation]);
 
     useEffect(() => {
-        updatePage(pageNavigation.get(active));
+        if(contacts.length > 0) {
+            updatePage(pageNavigation.get(active));
+        }else{
+            updatePage([]);
+        }
     }, [updatePage, pageNavigation, active, contacts]);
+
+    useEffect(() => {
+        if(contacts.length === 0){
+            setPageNavigation(new Map());
+        }
+    }, [contacts]);
 
     return (
         <Pagination>{items}</Pagination>

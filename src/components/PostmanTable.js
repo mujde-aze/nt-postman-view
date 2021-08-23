@@ -17,7 +17,7 @@ function PostmanTable(props) {
     const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
     const [contactsToPrint, setContactsToPrint] = useState([]);
     const [pageData, setPageData] = useState([]);
-    const [contactsUpdated, setContactsUpdated] = useState(false);
+    const [contactsUpdated, setContactsUpdated] = useState(true);
     const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
     const [updateButtonDisabled, setUpdateButtonDisabled] = useState(true);
 
@@ -28,9 +28,14 @@ function PostmanTable(props) {
 
     function handleYesModalOption() {
         if (contactsToPrint.length !== undefined && contactsToPrint.length > 0) {
-            contactsToPrint.forEach(async (contact) =>
-                await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus))
+            setShowUpdateSpinner(true);
+            contactsToPrint.forEach(async (contact) => {
+                    await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus));
+                }
             );
+            setShowUpdateSpinner(false);
+            setContactsUpdated(true);
+            setContactsToPrint([]);
         }
         handleCloseModal();
     }
@@ -45,13 +50,11 @@ function PostmanTable(props) {
 
     async function updatePostageStatus(userId, status) {
         try {
-            setShowUpdateSpinner(true);
             const updatePostageCallable = props.functions.httpsCallable("updateDtPostageStatus")
             await updatePostageCallable({
                 ntStatus: status,
                 userId: userId,
             });
-            setShowUpdateSpinner(false);
         } catch (error) {
             setToastProps({
                 body: "There was a problem updating the postage status. Please let the administrator know.",
@@ -61,32 +64,38 @@ function PostmanTable(props) {
             setShowSpinner(false);
             console.error(`Problem updating nt status to ${status} for user ${userId}`);
         }
-        setContactsUpdated(true);
-        setContactsToPrint([]);
     }
 
     useEffect(() => {
+        setContactsUpdated(true);
+        setContactsToPrint([]);
+    }, [props.ntStatus]);
+
+    useEffect(() => {
         (async () => {
-            try {
-                setShowSpinner(true);
-                const getContactsCallable = props.functions.httpsCallable("getDtContacts")
-                const result = await getContactsCallable({
-                    ntStatus: props.ntStatus,
-                    assignedToMe: true,
-                })
-                setShowSpinner(false);
-                setData(result.data);
-            } catch (error) {
-                if (error.code !== "not-found") {
-                    setToastProps({
-                        body: "There was a problem retrieving contacts. Please let the administrator know.",
-                        background: "warning"
-                    });
-                    setShowToast(true);
+            if (contactsUpdated === true) {
+                try {
+                    setShowSpinner(true);
+                    const getContactsCallable = props.functions.httpsCallable("getDtContacts")
+                    const result = await getContactsCallable({
+                        ntStatus: props.ntStatus,
+                        assignedToMe: true,
+                    })
                     setShowSpinner(false);
+                    setData(result.data);
+                } catch (error) {
+                    console.log(error.code)
+                    if (error.code !== "not-found") {
+                        setToastProps({
+                            body: "There was a problem retrieving contacts. Please let the administrator know.",
+                            background: "warning"
+                        });
+                        setShowToast(true);
+                    }
+                    console.warn(`No contacts with nt status ${props.ntStatus}`);
+                    setShowSpinner(false);
+                    setData([]);
                 }
-                console.error(`Problem retrieving contacts with nt status ${props.ntStatus}`);
-                setData([]);
             }
         })();
     }, [props.functions, props.ntStatus, contactsUpdated]);
@@ -120,12 +129,14 @@ function PostmanTable(props) {
             </Table>
             <div id="printButton">
                 <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
-                                 setUpdateButtonDisabled={setUpdateButtonDisabled}/>
+                                 setUpdateButtonDisabled={setUpdateButtonDisabled}
+                                 setContactsUpdated={setContactsUpdated}/>
             </div>
             <div id="bulkUpdateButton">
                 <Button variant="success"
                         onClick={() => confirmUpdate()}
-                        disabled={updateButtonDisabled}>Update {contactsToPrint.length} contacts</Button>
+                        disabled={updateButtonDisabled}>Update {contactsToPrint.length} contacts
+                    to {PostageStatus.getDisplayName(PostageStatus.getTransitionState(props.ntStatus))}</Button>
             </div>
             <div id="customPagination">
                 <CustomPagination contacts={data} updatePage={setPageData}/>

@@ -26,6 +26,7 @@ function ContactsPrinter(props) {
         }
         doc.save("contacts.pdf");
         props.setUpdateButtonDisabled(false);
+        props.setContactsUpdated(false);
     }
 
     return (
