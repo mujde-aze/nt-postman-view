@@ -19,7 +19,7 @@ function PostmanTable(props) {
     const [pageData, setPageData] = useState([]);
     const [contactsUpdated, setContactsUpdated] = useState(false);
     const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
-    const [updateButtonDisabled, setUpdateButtonDisabled] = useState(false);
+    const [updateButtonDisabled, setUpdateButtonDisabled] = useState(true);
     const [displayPrintButton, setDisplayPrintButton] = useState(true);
     const [contactsPrinted, setContactsPrinted] = useState(false);
 
@@ -94,7 +94,14 @@ function PostmanTable(props) {
 
     useEffect(() => {
         setContactsPrinted(false);
-    }, [setContactsPrinted, selectedContacts]);
+        if (props.ntStatus === PostageStatus.NT_SENT) {
+            if (selectedContacts.length > 0) {
+                setUpdateButtonDisabled(false);
+            } else {
+                setUpdateButtonDisabled(true);
+            }
+        }
+    }, [setContactsPrinted, selectedContacts, props.ntStatus]);
 
     useEffect(() => {
         if (contactsPrinted === true) {
@@ -108,6 +115,7 @@ function PostmanTable(props) {
         if (props.ntStatus === PostageStatus.NEEDS_NT) {
             setDisplayPrintButton(true);
         } else {
+            setUpdateButtonDisabled(true);
             setDisplayPrintButton(false);
         }
     }, [props.ntStatus]);
@@ -116,7 +124,6 @@ function PostmanTable(props) {
         (async () => {
             if (props.ntStatus === PostageStatus.NT_SENT) {
                 setContactsUpdated(false);
-                setUpdateButtonDisabled(false);
             }
 
             try {
