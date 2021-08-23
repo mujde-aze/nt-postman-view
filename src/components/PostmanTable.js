@@ -15,10 +15,36 @@ function PostmanTable(props) {
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
     const [showSpinner, setShowSpinner] = useState(false);
     const [contactsToPrint, setContactsToPrint] = useState([]);
+    const [prevPrintSize, setPrevPrintSize] = useState(0);
     const [pageData, setPageData] = useState([]);
     const [contactsUpdated, setContactsUpdated] = useState(true);
     const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
-    const [updateButtonDisabled, setUpdateButtonDisabled] = useState(true);
+    const [updateButtonDisabled, setUpdateButtonDisabled] = useState(false);
+
+    ensureCurrentListBeforeUpdate();
+
+    function ensureCurrentListBeforeUpdate() {
+        if (props.ntStatus === PostageStatus.NEEDS_NT) {
+            if (prevPrintSize !== contactsToPrint.length) {
+                if (updateButtonDisabled === false) {
+                    setUpdateButtonDisabled(true);
+                }
+                setPrevPrintSize(contactsToPrint.length);
+            }
+
+            if (printListButtonDisabled === true && contactsToPrint.length > 0) {
+                setPrintListButtonDisabled(false);
+            }
+
+            if (printListButtonDisabled === false && contactsToPrint.length === 0) {
+                setPrintListButtonDisabled(true);
+            }
+
+            if (updateButtonDisabled === false && contactsToPrint.length === 0) {
+                setUpdateButtonDisabled(true);
+            }
+        }
+    }
 
     function handleNoModalOption() {
         console.log(`Will not update the ${contactsToPrint.length} selected contacts to status ${PostageStatus.getTransitionState(props.ntStatus)}`);
@@ -66,6 +92,9 @@ function PostmanTable(props) {
     useEffect(() => {
         setContactsUpdated(true);
         setContactsToPrint([]);
+        if (props.ntStatus === PostageStatus.NT_SENT) {
+            setUpdateButtonDisabled(false);
+        }
     }, [props.ntStatus]);
 
     useEffect(() => {
@@ -97,6 +126,15 @@ function PostmanTable(props) {
         })();
     }, [props.functions, props.ntStatus, contactsUpdated]);
 
+    let contactsPrinter;
+    if (props.ntStatus === PostageStatus.NEEDS_NT) {
+        contactsPrinter = <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
+                                           setUpdateButtonDisabled={setUpdateButtonDisabled}
+                                           setContactsUpdated={setContactsUpdated} ntStatus={props.ntStatus}/>;
+    } else {
+        contactsPrinter = <span></span>
+    }
+
     return (
         <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
@@ -118,16 +156,11 @@ function PostmanTable(props) {
                 </thead>
                 <tbody>
                 <DataRows data={pageData} printList={contactsToPrint}
-                          setPrintList={setContactsToPrint} printButtonDisabled={printListButtonDisabled}
-                          setPrintButtonDisabled={setPrintListButtonDisabled}
-                          updateButtonDisabled={updateButtonDisabled}
-                          setUpdateButtonDisabled={setUpdateButtonDisabled}/>
+                          setPrintList={setContactsToPrint}/>
                 </tbody>
             </Table>
             <div id="printButton">
-                <ContactsPrinter contactsToPrint={contactsToPrint} buttonDisabled={printListButtonDisabled}
-                                 setUpdateButtonDisabled={setUpdateButtonDisabled}
-                                 setContactsUpdated={setContactsUpdated}/>
+                {contactsPrinter}
             </div>
             <div id="bulkUpdateButton">
                 <Button variant="success"

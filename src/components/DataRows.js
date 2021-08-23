@@ -2,10 +2,7 @@ import {InputGroup} from "react-bootstrap";
 import {useEffect} from "react";
 
 function DataRows(props) {
-    const {
-        data, printList, setPrintList, setPrintButtonDisabled,
-        printButtonDisabled, updateButtonDisabled, setUpdateButtonDisabled
-    } = props;
+    const {data, printList, setPrintList} = props;
 
     useEffect(() => {
         printList.forEach((item) => {
@@ -15,18 +12,8 @@ function DataRows(props) {
             }
         });
 
-        if (printButtonDisabled === true && printList.length > 0) {
-            setPrintButtonDisabled(false);
-        }
 
-        if (printButtonDisabled === false && printList.length === 0) {
-            setPrintButtonDisabled(true);
-        }
-
-        if (updateButtonDisabled === false && printList.length === 0) {
-            setUpdateButtonDisabled(true);
-        }
-    }, [data, printButtonDisabled, printList, setPrintButtonDisabled, setUpdateButtonDisabled, updateButtonDisabled]);
+    }, [data, printList]);
 
     function updatePrintList(contact) {
         let newPrintList = printList.slice();
