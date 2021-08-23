@@ -4,6 +4,7 @@ import "../models/Amiri-Regular-normal";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 
 function ContactsPrinter(props) {
+    const {setContactsPrinted, contactsSelected} = props;
 
     function printContacts() {
         const contactsPerPage = 8;
@@ -11,7 +12,7 @@ function ContactsPrinter(props) {
         doc.setFont("Amiri-Regular");
         doc.setFontSize(14);
 
-        const contactsColumn = splitContactsInHalf(props.contactsSelected);
+        const contactsColumn = splitContactsInHalf(contactsSelected);
         const totalNumberOfRows = Math.max(contactsColumn.sizeOfColumn1, contactsColumn.sizeOfColumn2);
         const numberOfPdfPages = Math.ceil(totalNumberOfRows / contactsPerPage);
 
@@ -25,8 +26,7 @@ function ContactsPrinter(props) {
             doc.addPage();
         }
         doc.save("contacts.pdf");
-        props.setUpdateButtonDisabled(false);
-        props.setContactsUpdated(false);
+        setContactsPrinted(true);
     }
 
     return (

@@ -17,10 +17,11 @@ function PostmanTable(props) {
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [prevNumberOfSelectedContact, setPrevNumberOfSelectedContact] = useState(0);
     const [pageData, setPageData] = useState([]);
-    const [contactsUpdated, setContactsUpdated] = useState(true);
+    const [contactsUpdated, setContactsUpdated] = useState(false);
     const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
     const [updateButtonDisabled, setUpdateButtonDisabled] = useState(false);
     const [displayPrintButton, setDisplayPrintButton] = useState(true);
+    const [contactsPrinted, setContactsPrinted] = useState(false);
 
     ensureCurrentListBeforeUpdate();
 
@@ -92,7 +93,17 @@ function PostmanTable(props) {
     }
 
     useEffect(() => {
-        setContactsUpdated(true);
+        setContactsPrinted(false);
+    }, [setContactsPrinted, selectedContacts]);
+
+    useEffect(() => {
+        if (contactsPrinted === true) {
+            setUpdateButtonDisabled(false);
+            setContactsUpdated(false);
+        }
+    }, [contactsPrinted]);
+
+    useEffect(() => {
         setSelectedContacts([]);
         if (props.ntStatus === PostageStatus.NEEDS_NT) {
             setDisplayPrintButton(true);
@@ -102,37 +113,33 @@ function PostmanTable(props) {
     }, [props.ntStatus]);
 
     useEffect(() => {
-        if (props.ntStatus === PostageStatus.NT_SENT && contactsUpdated === true) {
-            setContactsUpdated(false);
-            setUpdateButtonDisabled(false);
-        }
-    }, [contactsUpdated, props.ntStatus]);
-
-    useEffect(() => {
         (async () => {
-            if (contactsUpdated === true) {
-                try {
-                    setShowSpinner(true);
-                    const getContactsCallable = props.functions.httpsCallable("getDtContacts")
-                    const result = await getContactsCallable({
-                        ntStatus: props.ntStatus,
-                        assignedToMe: true,
-                    })
-                    setShowSpinner(false);
-                    setData(result.data);
-                } catch (error) {
-                    console.log(error.code)
-                    if (error.code !== "not-found") {
-                        setToastProps({
-                            body: "There was a problem retrieving contacts. Please let the administrator know.",
-                            background: "warning"
-                        });
-                        setShowToast(true);
-                    }
-                    console.warn(`No contacts with nt status ${props.ntStatus}`);
-                    setShowSpinner(false);
-                    setData([]);
+            if (props.ntStatus === PostageStatus.NT_SENT) {
+                setContactsUpdated(false);
+                setUpdateButtonDisabled(false);
+            }
+
+            try {
+                setShowSpinner(true);
+                const getContactsCallable = props.functions.httpsCallable("getDtContacts")
+                const result = await getContactsCallable({
+                    ntStatus: props.ntStatus,
+                    assignedToMe: true,
+                })
+                setShowSpinner(false);
+                setData(result.data);
+            } catch (error) {
+                console.log(error.code)
+                if (error.code !== "not-found") {
+                    setToastProps({
+                        body: "There was a problem retrieving contacts. Please let the administrator know.",
+                        background: "warning"
+                    });
+                    setShowToast(true);
                 }
+                console.warn(`No contacts with nt status ${props.ntStatus}`);
+                setShowSpinner(false);
+                setData([]);
             }
         })();
     }, [props.functions, props.ntStatus, contactsUpdated]);
@@ -157,15 +164,14 @@ function PostmanTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                <DataRows data={pageData} printList={selectedContacts}
-                          setPrintList={setSelectedContacts}/>
+                <DataRows data={pageData} selectedContacts={selectedContacts}
+                          setSelectedContacts={setSelectedContacts}/>
                 </tbody>
             </Table>
             <div id="printButton">
                 {displayPrintButton ?
                     <ContactsPrinter contactsSelected={selectedContacts} buttonDisabled={printListButtonDisabled}
-                                     setUpdateButtonDisabled={setUpdateButtonDisabled}
-                                     setContactsUpdated={setContactsUpdated} ntStatus={props.ntStatus}/>
+                                     setContactsPrinted={setContactsPrinted} ntStatus={props.ntStatus}/>
                     : undefined
                 }
             </div>

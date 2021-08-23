@@ -2,34 +2,34 @@ import {InputGroup} from "react-bootstrap";
 import {useEffect} from "react";
 
 function DataRows(props) {
-    const {data, printList, setPrintList} = props;
+    const {data, selectedContacts, setSelectedContacts} = props;
 
     useEffect(() => {
-        printList.forEach((item) => {
+        selectedContacts.forEach((item) => {
             const checkbox = document.getElementById(item.id);
             if (checkbox !== null && checkbox.checked === false) {
                 checkbox.checked = true;
             }
         });
 
-    }, [data, printList]);
+    }, [data, selectedContacts]);
 
-    function updatePrintList(contact) {
-        let newPrintList = printList.slice();
+    function updateSelectedContacts(contact) {
+        let newSelectedContacts = selectedContacts.slice();
 
-        if (newPrintList.filter((existingContact => existingContact.id === contact.id)).length > 0) {
-            newPrintList = printList.filter(existingContact => existingContact.id !== contact.id);
+        if (newSelectedContacts.filter((existingContact => existingContact.id === contact.id)).length > 0) {
+            newSelectedContacts = selectedContacts.filter(existingContact => existingContact.id !== contact.id);
         } else {
-            newPrintList.push(contact);
+            newSelectedContacts.push(contact);
         }
-        setPrintList(newPrintList);
+        setSelectedContacts(newSelectedContacts);
     }
 
     if (data.length > 0) {
         return (data.map((contact) => <tr key={contact.id}>
             <td>
                 <InputGroup className="mb-1">
-                    <InputGroup.Checkbox id={contact.id} onClick={() => updatePrintList({
+                    <InputGroup.Checkbox id={contact.id} onClick={() => updateSelectedContacts({
                         id: contact.id,
                         name: contact.name,
                         phone: contact.phone,
