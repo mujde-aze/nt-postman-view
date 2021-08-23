@@ -14,7 +14,6 @@ function PostmanTable(props) {
     const [showToast, setShowToast] = useState(false);
     const [toastProps, setToastProps] = useState({body: "", background: "light"});
     const [showSpinner, setShowSpinner] = useState(false);
-    const [showUpdateSpinner, setShowUpdateSpinner] = useState(false);
     const [contactsToPrint, setContactsToPrint] = useState([]);
     const [pageData, setPageData] = useState([]);
     const [contactsUpdated, setContactsUpdated] = useState(true);
@@ -28,12 +27,10 @@ function PostmanTable(props) {
 
     function handleYesModalOption() {
         if (contactsToPrint.length !== undefined && contactsToPrint.length > 0) {
-            setShowUpdateSpinner(true);
             contactsToPrint.forEach(async (contact) => {
                     await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus));
                 }
             );
-            setShowUpdateSpinner(false);
             setContactsUpdated(true);
             setContactsToPrint([]);
         }
@@ -104,8 +101,8 @@ function PostmanTable(props) {
         <div id="dataTable">
             <CustomToast setShowToast={setShowToast} showToast={showToast} toastBody={toastProps.body}
                          background={toastProps.background}/>
-            <ConfirmationModal showUpdateSpinner={showUpdateSpinner} showModal={showModal}
-                               handleCloseModal={handleCloseModal} contactsSelected={contactsToPrint.length}
+            <ConfirmationModal showModal={showModal} handleCloseModal={handleCloseModal}
+                               contactsSelected={contactsToPrint.length}
                                handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
                                transitionToStatus={PostageStatus.getTransitionState(props.ntStatus)}/>
             <LoadingSpinner showSpinner={showSpinner}/>
