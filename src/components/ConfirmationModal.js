@@ -1,35 +1,36 @@
 import {Button, Modal} from "react-bootstrap";
 import {PostageStatus} from "../models/PostageStatus";
+import PropTypes from "prop-types";
 
-function ConfirmationModal(props) {
-  const printConfirmation = props.transitionToStatus === PostageStatus.NT_SENT ?
+function ConfirmationModal({transitionToStatus, handleYesModalOption, handleCloseModal, contactsSelected, handleNoModalOption, showModal}) {
+  const printConfirmation = transitionToStatus === PostageStatus.NT_SENT ?
         "Before clicking 'Yes', please ensure that you have already printed the label." : "";
 
   let modalFooter = <Modal.Footer>
-    <Button variant="secondary" onClick={props.handleNoModalOption}>
+    <Button variant="secondary" onClick={handleNoModalOption}>
             No
     </Button>
-    <Button variant="primary" onClick={props.handleYesModalOption}>
+    <Button variant="primary" onClick={handleYesModalOption}>
             Yes
     </Button>
   </Modal.Footer>;
 
   let modalMessage;
-  if (props.contactsSelected === 1) {
+  if (contactsSelected === 1) {
     modalMessage = `Are you sure you want to set the Postage Status of the selected contact
-        to ${PostageStatus.getDisplayName(props.transitionToStatus)}? ${printConfirmation}`;
-  } else if (props.contactsSelected > 1) {
-    modalMessage = `Are you sure you want to set the Postage Status of the ${props.contactsSelected} selected contacts
-        to ${PostageStatus.getDisplayName(props.transitionToStatus)}? ${printConfirmation}`;
+        to ${PostageStatus.getDisplayName(transitionToStatus)}? ${printConfirmation}`;
+  } else if (contactsSelected > 1) {
+    modalMessage = `Are you sure you want to set the Postage Status of the ${contactsSelected} selected contacts
+        to ${PostageStatus.getDisplayName(transitionToStatus)}? ${printConfirmation}`;
   } else {
     modalMessage = "That's odd, you should not be here without selecting a contact. Please select 'Cancel' to close this modal and speak to your administrator.";
-    modalFooter = <Button variant="secondary" onClick={props.handleCloseModal}>
+    modalFooter = <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
     </Button>;
   }
 
   return (
-    <Modal show={props.showModal} onHide={props.handleCloseModal}>
+    <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
         <Modal.Title>Update Postage Status</Modal.Title>
       </Modal.Header>
@@ -38,5 +39,14 @@ function ConfirmationModal(props) {
     </Modal>
   );
 }
+
+ConfirmationModal.propTypes = {
+  transitionToStatus: PropTypes.objectOf(PostageStatus),
+  handleYesModalOption: PropTypes.func,
+  handleCloseModal: PropTypes.func,
+  contactsSelected: PropTypes.number,
+  handleNoModalOption: PropTypes.func,
+  showModal: PropTypes.bool,
+};
 
 export default ConfirmationModal;

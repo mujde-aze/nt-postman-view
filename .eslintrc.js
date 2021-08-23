@@ -25,5 +25,6 @@ module.exports = {
     "max-len": "off",
     "semi": ["error", "always"],
     "require-jsdoc": "off",
+    "react/react-in-jsx-scope": "off",
   },
 };

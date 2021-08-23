@@ -2,12 +2,12 @@ import {Button} from "react-bootstrap";
 import {jsPDF} from "jspdf";
 import "../models/Amiri-Regular-normal";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
+import PropTypes from "prop-types";
 
-function ContactsPrinter(props) {
-  const {setContactsPrinted, contactsSelected} = props;
-
+function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled}) {
   function printContacts() {
     const contactsPerPage = 11;
+    // eslint-disable-next-line new-cap
     const doc = new jsPDF();
     doc.setFont("Amiri-Regular");
     doc.setFontSize(14);
@@ -28,7 +28,7 @@ function ContactsPrinter(props) {
   }
 
   return (
-    <Button variant="success" onClick={() => printContacts()} disabled={props.buttonDisabled}>Save to print
+    <Button variant="success" onClick={() => printContacts()} disabled={buttonDisabled}>Save to print
             list</Button>
   );
 }
@@ -53,5 +53,11 @@ function formatContacts(contacts) {
             `,
   ).join("");
 }
+
+ContactsPrinter.propTypes = {
+  contactsSelected: PropTypes.array,
+  setContactsPrinted: PropTypes.func,
+  buttonDisabled: PropTypes.bool,
+};
 
 export default ContactsPrinter;
