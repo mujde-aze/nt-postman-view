@@ -12,7 +12,6 @@ function DataRows(props) {
             }
         });
 
-
     }, [data, printList]);
 
     function updatePrintList(contact) {
