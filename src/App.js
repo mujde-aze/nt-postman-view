@@ -25,7 +25,7 @@ function App(props) {
             </Row>
             <Row>
                 <Col id="statusSelect">
-                    <DropdownButton id="dropdown-item-button" title="Select a postage status">
+                    <DropdownButton id="dropdown-item-button" title={PostageStatus.getDisplayName(selectedStatus)}>
                         <Dropdown.ItemText>Select a postage status</Dropdown.ItemText>
                         <Dropdown.Item as="button" onClick={(e) => setSelectedStatus(PostageStatus.NEEDS_NT)}>Needs
                             NT</Dropdown.Item>
