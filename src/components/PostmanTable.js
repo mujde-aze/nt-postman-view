@@ -82,6 +82,11 @@ function PostmanTable(props) {
                 ntStatus: status,
                 userId: userId,
             });
+            setToastProps({
+                body: "Successfully updated the selected contacts.",
+                background: "success"
+            });
+            setShowToast(true);
         } catch (error) {
             setToastProps({
                 body: "There was a problem updating the postage status. Please let the administrator know.",
