@@ -1,9 +1,9 @@
 import {Pagination} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
+import * as PropType from "prop-types";
 
-function CustomPagination(props) {
-  const {contacts, updatePage} = props;
+function CustomPagination({contacts, updatePage}) {
   const [active, setActive] = useState(1);
   const [pageNavigation, setPageNavigation] = useState(new Map());
 
@@ -49,5 +49,10 @@ function CustomPagination(props) {
     <Pagination>{items}</Pagination>
   );
 }
+
+CustomPagination.propTypes = {
+  contacts: PropType.array,
+  updatePage: PropType.func,
+};
 
 export default CustomPagination;

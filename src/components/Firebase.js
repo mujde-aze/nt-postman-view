@@ -1,10 +1,10 @@
 import SignInScreen from "./SignInScreen";
 import {useEffect, useState} from "react";
 import App from "../App";
+import PropTypes from "prop-types";
 
-function Firebase(props) {
+function Firebase({firebase, functions}) {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const firebase = props.firebase;
 
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
@@ -17,7 +17,12 @@ function Firebase(props) {
     return (<SignInScreen firebase={firebase}/>);
   }
 
-  return (<App firebase={firebase} functions={props.functions}/>);
+  return (<App firebase={firebase} functions={functions}/>);
 }
+
+Firebase.propTypes = {
+  firebase: PropTypes.object,
+  functions: PropTypes.object,
+};
 
 export default Firebase;

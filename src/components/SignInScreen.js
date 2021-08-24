@@ -1,7 +1,7 @@
 import {StyledFirebaseAuth} from "react-firebaseui";
+import PropTypes from "prop-types";
 
-function SignInScreen(props) {
-  const firebase = props.firebase;
+function SignInScreen({firebase}) {
   const uiConfig = {
     signInFlow: "redirect",
     signInOptions: [
@@ -21,5 +21,9 @@ function SignInScreen(props) {
     </div>
   );
 }
+
+SignInScreen.propTypes = {
+  firebase: PropTypes.object,
+};
 
 export default SignInScreen;

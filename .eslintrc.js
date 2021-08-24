@@ -18,6 +18,10 @@ module.exports = {
     "react",
     "react-hooks",
   ],
+  "ignorePatterns": [
+    "src/models/Amiri-Regular-normal.js",
+    "src/*.css",
+  ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

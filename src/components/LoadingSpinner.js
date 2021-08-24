@@ -1,8 +1,9 @@
 import {Spinner} from "react-bootstrap";
+import PropTypes from "prop-types";
 
-function LoadingSpinner(props) {
+function LoadingSpinner({showSpinner}) {
   let spinner;
-  if (props.showSpinner) {
+  if (showSpinner) {
     spinner = <Spinner animation="border" role="status"/>;
   } else {
     spinner = <span />;
@@ -14,5 +15,9 @@ function LoadingSpinner(props) {
     </div>
   );
 }
+
+LoadingSpinner.propTypes = {
+  showSpinner: PropTypes.bool,
+};
 
 export default LoadingSpinner;

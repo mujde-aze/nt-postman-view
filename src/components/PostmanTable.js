@@ -7,8 +7,9 @@ import LoadingSpinner from "./LoadingSpinner";
 import {PostageStatus} from "../models/PostageStatus";
 import ContactsPrinter from "./ContactsPrinter";
 import CustomPagination from "./CustomPagination";
+import PropTypes from "prop-types";
 
-function PostmanTable(props) {
+function PostmanTable({ntStatus, functions, firebase}) {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -30,7 +31,7 @@ function PostmanTable(props) {
      * 3. The update button must be disabled as long as the 'Save to print list' button is disabled and no contacts
      * have been selected.
      * */
-  if (props.ntStatus === PostageStatus.NEEDS_NT) {
+  if (ntStatus === PostageStatus.NEEDS_NT) {
     if (prevNumberOfSelectedContact !== selectedContacts.length) {
       if (updateButtonDisabled === false) {
         setUpdateButtonDisabled(true);
@@ -49,7 +50,7 @@ function PostmanTable(props) {
   }
 
   function handleNoModalOption() {
-    console.log(`Will not update the ${selectedContacts.length} selected contacts to status ${PostageStatus.getTransitionState(props.ntStatus)}`);
+    console.log(`Will not update the ${selectedContacts.length} selected contacts to status ${PostageStatus.getTransitionState(ntStatus)}`);
     handleCloseModal();
   }
 
@@ -57,7 +58,7 @@ function PostmanTable(props) {
     if (selectedContacts.length !== undefined && selectedContacts.length > 0) {
       setShowSpinner(true);
       selectedContacts.forEach(async (contact) => {
-        await updatePostageStatus(contact.id, PostageStatus.getTransitionState(props.ntStatus));
+        await updatePostageStatus(contact.id, PostageStatus.getTransitionState(ntStatus));
       },
       );
       setContactsUpdated(true);
@@ -77,7 +78,7 @@ function PostmanTable(props) {
 
   async function updatePostageStatus(userId, status) {
     try {
-      const updatePostageCallable = props.functions.httpsCallable("updateDtPostageStatus");
+      const updatePostageCallable = functions.httpsCallable("updateDtPostageStatus");
       await updatePostageCallable({
         ntStatus: status,
         userId: userId,
@@ -99,14 +100,14 @@ function PostmanTable(props) {
 
   useEffect(() => {
     setContactsPrinted(false);
-    if (props.ntStatus === PostageStatus.NT_SENT) {
+    if (ntStatus === PostageStatus.NT_SENT) {
       if (selectedContacts.length > 0) {
         setUpdateButtonDisabled(false);
       } else {
         setUpdateButtonDisabled(true);
       }
     }
-  }, [setContactsPrinted, selectedContacts, props.ntStatus]);
+  }, [setContactsPrinted, selectedContacts, ntStatus]);
 
   useEffect(() => {
     if (contactsPrinted === true) {
@@ -117,21 +118,21 @@ function PostmanTable(props) {
 
   useEffect(() => {
     setSelectedContacts([]);
-    if (props.ntStatus === PostageStatus.NEEDS_NT) {
+    if (ntStatus === PostageStatus.NEEDS_NT) {
       setDisplayPrintButton(true);
     } else {
       setUpdateButtonDisabled(true);
       setDisplayPrintButton(false);
     }
-  }, [props.ntStatus]);
+  }, [ntStatus]);
 
   useEffect(() => {
     (async () => {
       try {
         setShowSpinner(true);
-        const getContactsCallable = props.functions.httpsCallable("getDtContacts");
+        const getContactsCallable = functions.httpsCallable("getDtContacts");
         const result = await getContactsCallable({
-          ntStatus: props.ntStatus,
+          ntStatus: ntStatus,
           assignedToMe: true,
         });
         setShowSpinner(false);
@@ -145,7 +146,7 @@ function PostmanTable(props) {
           });
           setShowToast(true);
         }
-        console.warn(`No contacts with nt status ${props.ntStatus}`);
+        console.warn(`No contacts with nt status ${ntStatus}`);
         setShowSpinner(false);
         setData([]);
       }
@@ -154,7 +155,7 @@ function PostmanTable(props) {
     return () => {
       setContactsUpdated(false);
     };
-  }, [props.functions, props.ntStatus, contactsUpdated]);
+  }, [functions, ntStatus, contactsUpdated]);
 
   return (
     <div id="dataTable">
@@ -163,9 +164,9 @@ function PostmanTable(props) {
       <ConfirmationModal showModal={showModal} handleCloseModal={handleCloseModal}
         contactsSelected={selectedContacts.length}
         handleNoModalOption={handleNoModalOption} handleYesModalOption={handleYesModalOption}
-        transitionToStatus={PostageStatus.getTransitionState(props.ntStatus)}/>
+        transitionToStatus={PostageStatus.getTransitionState(ntStatus)}/>
       <LoadingSpinner showSpinner={showSpinner}/>
-      <p>Contacts assigned to me with status <strong>{PostageStatus.getDisplayName(props.ntStatus)}</strong>.</p>
+      <p>Contacts assigned to me with status <strong>{PostageStatus.getDisplayName(ntStatus)}</strong>.</p>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -183,7 +184,7 @@ function PostmanTable(props) {
       <div id="printButton">
         {displayPrintButton ?
                     <ContactsPrinter contactsSelected={selectedContacts} buttonDisabled={printListButtonDisabled}
-                      setContactsPrinted={setContactsPrinted} ntStatus={props.ntStatus}/> :
+                      setContactsPrinted={setContactsPrinted} ntStatus={ntStatus}/> :
                     undefined
         }
       </div>
@@ -191,7 +192,7 @@ function PostmanTable(props) {
         <Button variant="success"
           onClick={() => confirmUpdate()}
           disabled={updateButtonDisabled}>Update {selectedContacts.length} contacts
-                    to {PostageStatus.getDisplayName(PostageStatus.getTransitionState(props.ntStatus))}</Button>
+                    to {PostageStatus.getDisplayName(PostageStatus.getTransitionState(ntStatus))}</Button>
       </div>
       <div id="customPagination">
         <CustomPagination contacts={data} updatePage={setPageData}/>
@@ -199,5 +200,11 @@ function PostmanTable(props) {
     </div>
   );
 }
+
+PostmanTable.propTypes = {
+  ntStatus: PropTypes.string,
+  functions: PropTypes.object,
+  firebase: PropTypes.object,
+};
 
 export default PostmanTable;

@@ -1,9 +1,8 @@
 import {InputGroup} from "react-bootstrap";
 import {useEffect} from "react";
+import PropTypes from "prop-types";
 
-function DataRows(props) {
-  const {data, selectedContacts, setSelectedContacts} = props;
-
+function DataRows({data, selectedContacts, setSelectedContacts}) {
   useEffect(() => {
     selectedContacts.forEach((item) => {
       const checkbox = document.getElementById(item.id);
@@ -46,5 +45,11 @@ function DataRows(props) {
     </tr>]);
   }
 }
+
+DataRows.propTypes = {
+  data: PropTypes.array,
+  selectedContacts: PropTypes.array,
+  setSelectedContacts: PropTypes.func,
+};
 
 export default DataRows;

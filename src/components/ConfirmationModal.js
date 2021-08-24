@@ -41,7 +41,7 @@ function ConfirmationModal({transitionToStatus, handleYesModalOption, handleClos
 }
 
 ConfirmationModal.propTypes = {
-  transitionToStatus: PropTypes.objectOf(PostageStatus),
+  transitionToStatus: PropTypes.string,
   handleYesModalOption: PropTypes.func,
   handleCloseModal: PropTypes.func,
   contactsSelected: PropTypes.number,

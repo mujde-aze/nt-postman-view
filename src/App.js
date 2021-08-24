@@ -3,10 +3,9 @@ import PostmanTable from "./components/PostmanTable";
 import {Button, Col, Container, Dropdown, DropdownButton, Row} from "react-bootstrap";
 import {PostageStatus} from "./models/PostageStatus";
 import {useState} from "react";
+import PropTypes from "prop-types";
 
-function App(props) {
-  const firebase = props.firebase;
-  const functions = props.functions;
+function App({firebase, functions}) {
   const user = firebase.auth().currentUser;
   const [selectedStatus, setSelectedStatus] = useState(PostageStatus.NEEDS_NT);
 
@@ -42,5 +41,10 @@ function App(props) {
     </Container>
   );
 }
+
+App.propTypes = {
+  firebase: PropTypes.object,
+  functions: PropTypes.object,
+};
 
 export default App;
