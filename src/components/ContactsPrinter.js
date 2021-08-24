@@ -35,7 +35,7 @@ function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled})
 
 function distributeContactsOnPage(startingIndex, maxIndex, contacts) {
   const contactsOnPage = [];
-  for (let contactToPrint = startingIndex; contactToPrint < maxIndex; contactToPrint++) {
+  for (let contactToPrint = startingIndex; contactToPrint <= maxIndex; contactToPrint++) {
     if (contacts.length > contactToPrint) {
       contactsOnPage.push(contacts[contactToPrint]);
     }

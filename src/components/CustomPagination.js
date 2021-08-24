@@ -23,7 +23,7 @@ function CustomPagination({contacts, updatePage}) {
       const pageContents = [];
       const startingIndex = (page - 1) * itemsPerPage;
       for (let contactIndex = startingIndex;
-        contactIndex < calculateMaxIndexOnPage(startingIndex, itemsPerPage, contacts.length);
+        contactIndex <= calculateMaxIndexOnPage(startingIndex, itemsPerPage, contacts.length);
         contactIndex++) {
         pageContents.push(contacts[contactIndex]);
       }

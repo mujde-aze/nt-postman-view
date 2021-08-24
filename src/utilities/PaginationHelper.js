@@ -1,8 +1,11 @@
 export function calculateMaxIndexOnPage(startingIndex, itemsPerPage, maxNumberOfItems) {
+  let maxIndex;
   const potentialMaxIndexPerPage = startingIndex + itemsPerPage;
-  if ((potentialMaxIndexPerPage) <= (maxNumberOfItems)) {
-    return potentialMaxIndexPerPage;
+  if (potentialMaxIndexPerPage <= maxNumberOfItems) {
+    maxIndex = potentialMaxIndexPerPage;
   } else {
-    return maxNumberOfItems;
+    maxIndex = maxNumberOfItems;
   }
+
+  return maxIndex - 1;
 }
