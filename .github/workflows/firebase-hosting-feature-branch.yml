@@ -26,8 +26,12 @@ jobs:
           touch .env
           .github/scripts/env.sh
 
-      - name: Build and test
-        run: npm ci && npm run lint && npm run test && npm run build
+      - name: Test
+        run: npm ci && npm audit --audit-level=high && npm run lint && npm run test
+
+      - name: Build
+        run: npm run build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
