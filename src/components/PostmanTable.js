@@ -9,14 +9,14 @@ import ContactsPrinter from "./ContactsPrinter";
 import CustomPagination from "./CustomPagination";
 import PropTypes from "prop-types";
 
-function PostmanTable({ntStatus, functions, firebase}) {
+function PostmanTable({ntStatus, functions}) {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastProps, setToastProps] = useState({body: "", background: "light"});
   const [showSpinner, setShowSpinner] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState([]);
-  const [prevNumberOfSelectedContact, setPrevNumberOfSelectedContact] = useState(0);
+  const [prevNumberOfSelectedContacts, setPrevNumberOfSelectedContacts] = useState(0);
   const [pageData, setPageData] = useState([]);
   const [contactsUpdated, setContactsUpdated] = useState(false);
   const [printListButtonDisabled, setPrintListButtonDisabled] = useState(true);
@@ -32,11 +32,11 @@ function PostmanTable({ntStatus, functions, firebase}) {
      * have been selected.
      * */
   if (ntStatus === PostageStatus.NEEDS_NT) {
-    if (prevNumberOfSelectedContact !== selectedContacts.length) {
+    if (prevNumberOfSelectedContacts !== selectedContacts.length) {
       if (updateButtonDisabled === false) {
         setUpdateButtonDisabled(true);
       }
-      setPrevNumberOfSelectedContact(selectedContacts.length);
+      setPrevNumberOfSelectedContacts(selectedContacts.length);
     }
 
     if (printListButtonDisabled === true && selectedContacts.length > 0) {
@@ -204,7 +204,6 @@ function PostmanTable({ntStatus, functions, firebase}) {
 PostmanTable.propTypes = {
   ntStatus: PropTypes.string,
   functions: PropTypes.object,
-  firebase: PropTypes.object,
 };
 
 export default PostmanTable;

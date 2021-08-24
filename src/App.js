@@ -35,7 +35,7 @@ function App({firebase, functions}) {
       </Row>
       <Row>
         <Col>
-          <PostmanTable firebase={firebase} functions={functions} ntStatus={selectedStatus}/>
+          <PostmanTable functions={functions} ntStatus={selectedStatus}/>
         </Col>
       </Row>
     </Container>
