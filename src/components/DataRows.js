@@ -3,6 +3,9 @@ import {useEffect} from "react";
 import PropTypes from "prop-types";
 
 function DataRows({data, selectedContacts, setSelectedContacts}) {
+  /**
+     * Ensure that previously selected contacts remain selected when navigating between pages.
+     * */
   useEffect(() => {
     selectedContacts.forEach((item) => {
       const checkbox = document.getElementById(item.id);

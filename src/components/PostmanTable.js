@@ -98,6 +98,10 @@ function PostmanTable({ntStatus, functions}) {
     }
   }
 
+  /**
+   * Ensure that the printed flag is false once selections are being made. When on the NT Sent
+   * view, ensure that the update button is disabled if no contacts are selected.
+   * */
   useEffect(() => {
     setContactsPrinted(false);
     if (ntStatus === PostageStatus.NT_SENT) {
