@@ -7,6 +7,7 @@ module.exports = {
     "plugin:react/recommended",
     "google",
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
@@ -30,5 +31,11 @@ module.exports = {
     "semi": ["error", "always"],
     "require-jsdoc": "off",
     "react/react-in-jsx-scope": "off",
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect",
+    },
   },
 };
