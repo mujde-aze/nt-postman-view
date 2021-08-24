@@ -23,7 +23,7 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
     setSelectedContacts(newSelectedContacts);
   }
 
-  if (data.length > 0) {
+  if (data !== undefined && data.length > 0) {
     return (data.map((contact) => <tr key={contact.id}>
       <td>
         <InputGroup className="mb-1">

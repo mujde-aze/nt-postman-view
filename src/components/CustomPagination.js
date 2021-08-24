@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 import * as PropType from "prop-types";
 
-function CustomPagination({contacts, updatePage}) {
+function CustomPagination({contacts, updatePage, ntStatus}) {
   const [active, setActive] = useState(1);
   const [pageNavigation, setPageNavigation] = useState(new Map());
 
@@ -40,10 +40,9 @@ function CustomPagination({contacts, updatePage}) {
   }, [updatePage, pageNavigation, active, contacts]);
 
   useEffect(() => {
-    if (contacts.length === 0) {
-      setPageNavigation(new Map());
-    }
-  }, [contacts]);
+    setPageNavigation(new Map());
+    setActive(1);
+  }, [ntStatus, updatePage]);
 
   return (
     <Pagination>{items}</Pagination>
@@ -53,6 +52,7 @@ function CustomPagination({contacts, updatePage}) {
 CustomPagination.propTypes = {
   contacts: PropType.array,
   updatePage: PropType.func,
+  ntStatus: PropType.string,
 };
 
 export default CustomPagination;

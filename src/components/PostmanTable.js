@@ -195,7 +195,7 @@ function PostmanTable({ntStatus, functions}) {
                     to {PostageStatus.getDisplayName(PostageStatus.getTransitionState(ntStatus))}</Button>
       </div>
       <div id="customPagination">
-        <CustomPagination contacts={data} updatePage={setPageData}/>
+        <CustomPagination contacts={data} updatePage={setPageData} ntStatus={ntStatus}/>
       </div>
     </div>
   );
