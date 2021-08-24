@@ -18,6 +18,9 @@ function CustomPagination({contacts, updatePage, ntStatus}) {
     );
   }
 
+  /**
+   * Break contacts into pages then add each one to a map entry. Do this everytime contacts change.
+   * */
   useEffect(() => {
     for (let page = 1; page <= numberOfPages; page++) {
       const pageContents = [];
@@ -31,6 +34,10 @@ function CustomPagination({contacts, updatePage, ntStatus}) {
     }
   }, [contacts, numberOfPages, pageNavigation]);
 
+  /**
+   * When the contacts list has been cleared, this effect ensures that the table data
+   * is cleared as well.
+   * */
   useEffect(() => {
     if (contacts.length > 0) {
       updatePage(pageNavigation.get(active));
@@ -39,6 +46,9 @@ function CustomPagination({contacts, updatePage, ntStatus}) {
     }
   }, [updatePage, pageNavigation, active, contacts]);
 
+  /**
+   * When switching Nt Statuses, ensure that the active state is set to 1, and current navigation is cleared.
+   * */
   useEffect(() => {
     setPageNavigation(new Map());
     setActive(1);
