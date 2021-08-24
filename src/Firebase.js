@@ -1,7 +1,8 @@
-import Firebase from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/auth";
 import "firebase/functions";
+import "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,16 +14,16 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
-Firebase.initializeApp(firebaseConfig);
-export const functions = Firebase.app().functions("australia-southeast1");
+firebase.initializeApp(firebaseConfig);
+export const functions = firebase.app().functions("australia-southeast1");
 
 if (process.env.REACT_APP_DEV_MODE) {
-  const auth = Firebase.auth();
+  const auth = firebase.auth();
   auth.useEmulator("http://localhost:9099");
   functions.useEmulator("localhost", 5001);
 } else {
-  const appCheck = Firebase.appCheck();
+  const appCheck = firebase.appCheck();
   appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true);
 }
 
-export default Firebase;
+export default firebase;
