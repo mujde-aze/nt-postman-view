@@ -38,6 +38,7 @@ jobs:
       - name: Compress build directory
         run: |
           mkdir ${{ env.PACKAGE_NAME }}
+          cp firebase.json ${{ env.PACKAGE_NAME }}
           cp -R ${{ env.BUILD_DIRECTORY }} ${{ env.PACKAGE_NAME }}
 
       - uses: actions/upload-artifact@v2
