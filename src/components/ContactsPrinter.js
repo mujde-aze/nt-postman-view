@@ -1,6 +1,5 @@
 import {Button} from "react-bootstrap";
 import {jsPDF} from "jspdf";
-import "../models/Amiri-Regular-normal";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 import PropTypes from "prop-types";
 
