@@ -9,7 +9,7 @@ function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled})
     const contactsPerPage = 11;
     // eslint-disable-next-line new-cap
     const doc = new jsPDF();
-    doc.setFont("Amiri-Regular");
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(14);
 
     const totalNumberOfRows = contactsSelected.length;
