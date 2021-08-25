@@ -23,7 +23,7 @@ if (process.env.REACT_APP_DEV_MODE) {
   functions.useEmulator("localhost", 5001);
 } else {
   const appCheck = firebase.appCheck();
-  appCheck.activate(process.env.APP_CHECK_PUBLIC_KEY, true);
+  appCheck.activate(process.env.REACT_APP_APP_CHECK_PUBLIC_KEY, true);
 }
 
 export default firebase;
