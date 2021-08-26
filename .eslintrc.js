@@ -20,7 +20,7 @@ module.exports = {
     "react-hooks",
   ],
   "ignorePatterns": [
-    "src/models/Amiri-Regular-normal.js",
+    "src/models/Helvetica-unicode-normal.js",
     "src/*.css",
   ],
   "rules": {

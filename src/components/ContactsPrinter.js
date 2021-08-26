@@ -2,14 +2,19 @@ import {Button} from "react-bootstrap";
 import {jsPDF} from "jspdf";
 import {calculateMaxIndexOnPage} from "../utilities/PaginationHelper";
 import PropTypes from "prop-types";
+import "../models/Helvetica-unicode-normal";
 
 function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled}) {
   function printContacts() {
     const contactsPerPage = 11;
     // eslint-disable-next-line new-cap
     const doc = new jsPDF();
-    doc.setFont("helvetica", "normal");
+    doc.setFont("Helvetica-unicode", "normal");
     doc.setFontSize(14);
+
+    const currentDate = new Date();
+    const formattedDateTime = `${currentDate.toDateString()} ${currentDate.toTimeString()}`;
+    doc.text(formattedDateTime, 125, 5);
 
     const totalNumberOfRows = contactsSelected.length;
     const numberOfPdfPages = Math.ceil(totalNumberOfRows / contactsPerPage);
@@ -19,10 +24,10 @@ function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled})
       const maxIndex = calculateMaxIndexOnPage(startingIndex, contactsPerPage, totalNumberOfRows);
       const pageContacts = distributeContactsOnPage(startingIndex, maxIndex, contactsSelected);
 
-      doc.text(formatContacts(pageContacts), 5, 20);
+      doc.text(formatContacts(pageContacts), 5, 25);
       doc.addPage();
     }
-    doc.save("contacts.pdf");
+    doc.save(`contacts-${currentDate.toISOString()}.pdf`);
     setContactsPrinted(true);
   }
 
