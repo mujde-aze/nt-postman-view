@@ -54,18 +54,26 @@ function PostmanTable({ntStatus, functions}) {
     handleCloseModal();
   }
 
-  function handleYesModalOption() {
+  async function handleYesModalOption() {
+    handleCloseModal();
     if (selectedContacts.length !== undefined && selectedContacts.length > 0) {
       setShowSpinner(true);
-      selectedContacts.forEach(async (contact) => {
-        await updatePostageStatus(contact.id, PostageStatus.getTransitionState(ntStatus));
-      },
-      );
-      setContactsUpdated(true);
+      try {
+        for (const contact of selectedContacts) {
+          await updatePostageStatus(contact.id, PostageStatus.getTransitionState(ntStatus));
+        }
+        setToastProps({
+          body: "Successfully updated the selected contacts.",
+          background: "success",
+        });
+        setShowToast(true);
+        setContactsUpdated(true);
+        setSelectedContacts([]);
+      } catch (error) {
+        console.error(`There was a problem updating one or more contacts. ${error}`);
+      }
       setShowSpinner(false);
-      setSelectedContacts([]);
     }
-    handleCloseModal();
   }
 
   function handleCloseModal() {
@@ -83,11 +91,6 @@ function PostmanTable({ntStatus, functions}) {
         ntStatus: status,
         userId: userId,
       });
-      setToastProps({
-        body: "Successfully updated the selected contacts.",
-        background: "success",
-      });
-      setShowToast(true);
     } catch (error) {
       setToastProps({
         body: "There was a problem updating the postage status. Please let the administrator know.",
@@ -99,9 +102,9 @@ function PostmanTable({ntStatus, functions}) {
   }
 
   /**
-   * Ensure that the printed flag is false once selections are being made. When on the NT Sent
-   * view, ensure that the update button is disabled if no contacts are selected.
-   * */
+     * Ensure that the printed flag is false once selections are being made. When on the NT Sent
+     * view, ensure that the update button is disabled if no contacts are selected.
+     * */
   useEffect(() => {
     setContactsPrinted(false);
     if (ntStatus === PostageStatus.NT_SENT) {
@@ -178,6 +181,7 @@ function PostmanTable({ntStatus, functions}) {
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
+            <th>Date Requested</th>
           </tr>
         </thead>
         <tbody>

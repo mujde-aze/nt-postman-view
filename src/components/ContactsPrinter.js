@@ -7,14 +7,15 @@ import "../models/Helvetica-unicode-normal";
 function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled}) {
   function printContacts() {
     const contactsPerPage = 11;
+    const currentDate = new Date();
+    const formattedDateTime = `${currentDate.toDateString()} ${currentDate.toTimeString()}`;
+
     // eslint-disable-next-line new-cap
     const doc = new jsPDF();
     doc.setFont("Helvetica-unicode", "normal");
+    doc.setFontSize(10);
+    doc.text(formattedDateTime, 5, 5);
     doc.setFontSize(14);
-
-    const currentDate = new Date();
-    const formattedDateTime = `${currentDate.toDateString()} ${currentDate.toTimeString()}`;
-    doc.text(formattedDateTime, 125, 5);
 
     const totalNumberOfRows = contactsSelected.length;
     const numberOfPdfPages = Math.ceil(totalNumberOfRows / contactsPerPage);
