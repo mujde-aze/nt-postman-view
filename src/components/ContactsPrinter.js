@@ -29,7 +29,7 @@ function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled})
       doc.addPage();
     }
 
-    doc.save(`contacts-${currentDate.toLocaleString()}.pdf`);
+    doc.save(formatFileName(currentDate));
     setContactsPrinted(true);
   }
 
@@ -58,6 +58,11 @@ function formatContacts(contacts) {
             
             `,
   ).join("");
+}
+
+function formatFileName(currentDate) {
+  const date = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()}`;
+  return `contacts-${date}-${currentDate.toLocaleTimeString("en-GB")}.pdf`;
 }
 
 ContactsPrinter.propTypes = {
