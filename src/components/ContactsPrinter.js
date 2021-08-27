@@ -28,7 +28,8 @@ function ContactsPrinter({setContactsPrinted, contactsSelected, buttonDisabled})
       doc.text(formatContacts(pageContacts), 5, 25);
       doc.addPage();
     }
-    doc.save(`contacts-${currentDate.toISOString()}.pdf`);
+
+    doc.save(`contacts-${currentDate.toLocaleString()}.pdf`);
     setContactsPrinted(true);
   }
 
