@@ -1,8 +1,6 @@
-name: Deploy to Firebase Hosting from feature branch
+name: Build and test from feature branch
 
 on:
-  schedule:
-    - cron: '5 4 * * 4'
   push:
     branches: [ feature/** ]
 
