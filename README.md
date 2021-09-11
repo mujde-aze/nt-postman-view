@@ -23,6 +23,10 @@ Allow multipliers to view contacts that require NTs.
 
 Allow multipliers to view contacts that require NTs, select individual contacts to print labels for, and update the postage status when the NT has been sent. 
 
+![Image 1](documentation/images/screenshot1.PNG)
+![Image 3](documentation/images/screenshot3.PNG)
+![Image 2](documentation/images/screenshot2.PNG)
+
 ## Getting Started
 
 ### Prerequisites
