@@ -40,7 +40,7 @@ jobs:
       - name: Compress build directory
         run: |
           mkdir ${{ env.PACKAGE_NAME }}
-          cp firebase.json ${{ env.PACKAGE_NAME }}
+          cp CHANGELOG.md firebase.json ${{ env.PACKAGE_NAME }}
           cp -R ${{ env.BUILD_DIRECTORY }} ${{ env.PACKAGE_NAME }}
 
       - uses: actions/upload-artifact@v2
@@ -61,3 +61,7 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NT_POSTMAN }}'
           channelId: live
           projectId: nt-postman
+      - uses: ncipollo/release-action@v1
+        with:
+          bodyFile: "CHANGELOG.md"
+          token: ${{ secrets.GITHUB_TOKEN }}
