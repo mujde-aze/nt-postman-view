@@ -45,6 +45,6 @@
     "@testing-library/user-event": "^13.5.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-react-hooks": "^4.2.0"
+    "eslint-plugin-react-hooks": "^4.3.0"
   }
 }
