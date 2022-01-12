@@ -7,12 +7,11 @@ module.exports = {
     "plugin:react/recommended",
     "google",
   ],
-  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
     },
-    "ecmaVersion": 12,
+    "ecmaVersion": 13,
     "sourceType": "module",
   },
   "plugins": [
