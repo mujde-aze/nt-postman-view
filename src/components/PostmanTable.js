@@ -181,7 +181,7 @@ function PostmanTable({ntStatus, functions}) {
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
-            <th>Date Requested</th>
+            <th>Contact Updated</th>
           </tr>
         </thead>
         <tbody>

@@ -35,14 +35,14 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
             name: contact.name,
             phone: contact.phone,
             address: contact.address,
-            dateRequested: contact.dateRequested,
+            contactUpdated: contact.contactUpdated,
           })} aria-label="Add to print list"/>
         </InputGroup>
       </td>
       <td>{contact.name}</td>
       <td>{contact.phone}</td>
       <td>{contact.address}</td>
-      <td>{contact.dateRequested}</td>
+      <td>{contact.contactUpdated}</td>
     </tr>));
   } else {
     return ([<tr key="1" align="center">
