@@ -1,8 +1,9 @@
-import {InputGroup} from "react-bootstrap";
-import {useEffect} from "react";
+import {FormControl, InputGroup} from "react-bootstrap";
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 function DataRows({data, selectedContacts, setSelectedContacts}) {
+  const [trackingNumbers, setTrackingNumbers] = useState([]);
   /**
      * Ensure that previously selected contacts remain selected when navigating between pages.
      * */
@@ -26,6 +27,17 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
     setSelectedContacts(newSelectedContacts);
   }
 
+  function updateTrackingNumber(event, contactId) {
+    const updatedTrackingNumbers = trackingNumbers.filter((trackingNumber) => trackingNumber.id !== contactId);
+    updatedTrackingNumbers.push({id: contactId, trackingNumber: event.target.value});
+    setTrackingNumbers(updatedTrackingNumbers);
+  }
+
+  function getTrackingNumberForContact(contactId) {
+    const matchedTrackingNumber = trackingNumbers.find((trackingNumber) => trackingNumber.id === contactId);
+    return matchedTrackingNumber ? matchedTrackingNumber.trackingNumber : "";
+  }
+
   if (data !== undefined && data.length > 0) {
     return (data.map((contact) => <tr key={contact.id}>
       <td>
@@ -36,6 +48,7 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
             phone: contact.phone,
             address: contact.address,
             contactUpdated: contact.contactUpdated,
+            trackingNumber: getTrackingNumberForContact(contact.id),
           })} aria-label="Add to print list"/>
         </InputGroup>
       </td>
@@ -43,6 +56,11 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
       <td>{contact.phone}</td>
       <td>{contact.address}</td>
       <td>{contact.contactUpdated}</td>
+      <td>
+        <InputGroup className="mb-1">
+          <FormControl id={contact.id} type="text" value={getTrackingNumberForContact(contact.id)} onChange={(event) => updateTrackingNumber(event, contact.id)} />
+        </InputGroup>
+      </td>
     </tr>));
   } else {
     return ([<tr key="1" align="center">

@@ -182,6 +182,7 @@ function PostmanTable({ntStatus, functions}) {
             <th>Phone</th>
             <th>Address</th>
             <th>Contact Updated</th>
+            <th>Tracking Number</th>
           </tr>
         </thead>
         <tbody>
