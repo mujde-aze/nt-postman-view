@@ -60,7 +60,7 @@ function PostmanTable({ntStatus, functions}) {
       setShowSpinner(true);
       try {
         for (const contact of selectedContacts) {
-          await updatePostageStatus(contact.id, PostageStatus.getTransitionState(ntStatus));
+          await updatePostageStatus(contact, PostageStatus.getTransitionState(ntStatus));
         }
         setToastProps({
           body: "Successfully updated the selected contacts.",
@@ -84,12 +84,15 @@ function PostmanTable({ntStatus, functions}) {
     setShowModal(true);
   }
 
-  async function updatePostageStatus(userId, status) {
+  async function updatePostageStatus(contact, status) {
     try {
       const updatePostageCallable = functions.httpsCallable("updateDtPostageStatus");
       await updatePostageCallable({
         ntStatus: status,
-        userId: userId,
+        userId: contact.id,
+        phone: contact.phone,
+        name: contact.name,
+        trackingNumber: contact.trackingNumber,
       });
     } catch (error) {
       setToastProps({
@@ -97,7 +100,7 @@ function PostmanTable({ntStatus, functions}) {
         background: "warning",
       });
       setShowToast(true);
-      console.error(`Problem updating nt status to ${status} for user ${userId}`);
+      console.error(`Problem updating nt status to ${status} for user ${contact.id}`);
     }
   }
 
