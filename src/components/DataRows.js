@@ -68,7 +68,7 @@ function DataRows({data, selectedContacts, setSelectedContacts, displayTrackingN
     </tr>));
   } else {
     return ([<tr key="1" align="center">
-      <td colSpan="5">No contacts to display.</td>
+      <td colSpan="6">No contacts to display.</td>
     </tr>]);
   }
 }
