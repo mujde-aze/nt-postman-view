@@ -23,6 +23,7 @@ function PostmanTable({ntStatus, functions}) {
   const [updateButtonDisabled, setUpdateButtonDisabled] = useState(true);
   const [displayPrintButton, setDisplayPrintButton] = useState(true);
   const [contactsPrinted, setContactsPrinted] = useState(false);
+  const [displayTrackingNumberField, setDisplayTrackingNumberField] = useState(true);
 
   /**
      * Certain conditions need to be met when the status is 'needs_nt':
@@ -130,9 +131,11 @@ function PostmanTable({ntStatus, functions}) {
     setSelectedContacts([]);
     if (ntStatus === PostageStatus.NEEDS_NT) {
       setDisplayPrintButton(true);
+      setDisplayTrackingNumberField(true);
     } else {
       setUpdateButtonDisabled(true);
       setDisplayPrintButton(false);
+      setDisplayTrackingNumberField(false);
     }
   }, [ntStatus]);
 
@@ -185,12 +188,12 @@ function PostmanTable({ntStatus, functions}) {
             <th>Phone</th>
             <th>Address</th>
             <th>Contact Updated</th>
-            <th>Tracking Number</th>
+            { displayTrackingNumberField ? <th>Tracking Number</th> : <></> }
           </tr>
         </thead>
         <tbody>
           <DataRows data={pageData} selectedContacts={selectedContacts}
-            setSelectedContacts={setSelectedContacts}/>
+            setSelectedContacts={setSelectedContacts} displayTrackingNumberField={displayTrackingNumberField}/>
         </tbody>
       </Table>
       <div id="printButton">

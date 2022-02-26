@@ -2,7 +2,7 @@ import {FormControl, InputGroup} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
-function DataRows({data, selectedContacts, setSelectedContacts}) {
+function DataRows({data, selectedContacts, setSelectedContacts, displayTrackingNumberField}) {
   const [trackingNumbers, setTrackingNumbers] = useState([]);
   /**
      * Ensure that previously selected contacts remain selected when navigating between pages.
@@ -56,11 +56,15 @@ function DataRows({data, selectedContacts, setSelectedContacts}) {
       <td>{contact.phone}</td>
       <td>{contact.address}</td>
       <td>{contact.contactUpdated}</td>
-      <td>
-        <InputGroup className="mb-1">
-          <FormControl id={contact.id} type="text" value={getTrackingNumberForContact(contact.id)} onChange={(event) => updateTrackingNumber(event, contact.id)} />
-        </InputGroup>
-      </td>
+      { displayTrackingNumberField ?
+        <td>
+          <InputGroup className="mb-1">
+            <FormControl id={contact.id} type="text" value={getTrackingNumberForContact(contact.id)}
+              onChange={(event) => updateTrackingNumber(event, contact.id)}/>
+          </InputGroup>
+        </td> :
+        <></>
+      }
     </tr>));
   } else {
     return ([<tr key="1" align="center">
@@ -73,6 +77,7 @@ DataRows.propTypes = {
   data: PropTypes.array,
   selectedContacts: PropTypes.array,
   setSelectedContacts: PropTypes.func,
+  displayTrackingNumberField: PropTypes.bool,
 };
 
 export default DataRows;
