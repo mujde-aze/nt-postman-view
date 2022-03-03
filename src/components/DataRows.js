@@ -17,6 +17,10 @@ function DataRows({data, selectedContacts, setSelectedContacts, displayTrackingN
   }, [data, selectedContacts]);
 
   function updateSelectedContacts(contact) {
+    const checkbox = document.getElementById(contact.id);
+    const field = document.getElementById(`tracking-field-${contact.id}`);
+    field.disabled = checkbox.checked === true;
+
     let newSelectedContacts = selectedContacts.slice();
 
     if (newSelectedContacts.filter(((existingContact) => existingContact.id === contact.id)).length > 0) {
@@ -59,7 +63,7 @@ function DataRows({data, selectedContacts, setSelectedContacts, displayTrackingN
       { displayTrackingNumberField ?
         <td>
           <InputGroup className="mb-1">
-            <FormControl id={contact.id} type="text" value={getTrackingNumberForContact(contact.id)}
+            <FormControl id={`tracking-field-${contact.id}`} type="text" value={getTrackingNumberForContact(contact.id)}
               onChange={(event) => updateTrackingNumber(event, contact.id)}/>
           </InputGroup>
         </td> :
