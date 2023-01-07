@@ -1,6 +1,6 @@
 {
   "name": "nt-postman-view",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "dependencies": {
     "bootstrap": "^5.2.3",
